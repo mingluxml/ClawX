@@ -760,7 +760,7 @@ function SyntaxHighlightedCode({ code }: { code: string }) {
           }
         } else {
           parts.push(
-            <span key={`${lineIdx}-${keyIdx++}`} className="text-muted-foreground">
+            <span key={`${lineIdx}-rest-${keyIdx}`} className="text-muted-foreground">
               {rest}
             </span>
           );

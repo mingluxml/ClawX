@@ -83,15 +83,27 @@ export interface SkillInfo {
 }
 
 /**
- * Cron job definition
+ * Cron job definition - aligned with CoPaw API
  */
 export interface CronJob {
   id: string;
   name: string;
+  message: string;
   schedule: string;
   enabled: boolean;
-  lastRun?: string;
+  createdAt: string;
+  updatedAt: string;
+  lastRun?: {
+    time: string;
+    success: boolean;
+    error?: string;
+    duration?: number;
+  };
   nextRun?: string;
+  /** Target channel for task execution */
+  channel?: string;
+  /** Target session ID for task execution */
+  sessionId?: string;
 }
 
 /**
@@ -223,9 +235,29 @@ export interface AgentBackend extends EventEmitter {
   listCronJobs(): Promise<CronJob[]>;
 
   /**
+   * Get a specific cron job
+   */
+  getCronJob(jobId: string): Promise<CronJob>;
+
+  /**
    * Create a cron job
    */
   createCronJob(job: Omit<CronJob, 'id'>): Promise<CronJob>;
+
+  /**
+   * Update a cron job
+   */
+  updateCronJob(jobId: string, update: Partial<Omit<CronJob, 'id' | 'createdAt'>>): Promise<CronJob>;
+
+  /**
+   * Toggle cron job enable/disable state
+   */
+  toggleCronJob(jobId: string, enabled: boolean): Promise<CronJob>;
+
+  /**
+   * Trigger cron job manually
+   */
+  triggerCronJob(jobId: string): Promise<void>;
 
   /**
    * Delete a cron job

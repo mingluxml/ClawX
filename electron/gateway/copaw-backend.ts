@@ -3,6 +3,7 @@
  * HTTP/REST-based backend adapter for CoPaw AI agent
  */
 import { spawn, ChildProcess } from 'child_process';
+import { randomUUID } from 'crypto';
 import { EventEmitter } from 'events';
 import { existsSync, readFileSync, unlinkSync, readdirSync } from 'fs';
 import { join } from 'path';
@@ -565,7 +566,7 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
       let finalResult: unknown = null;
       
       // Track current message context
-      let currentMsgId: string | null = null;
+      let _currentMsgId: string | null = null;
       let currentMsgType: string | null = null; // 'reasoning' | 'message' | 'function_call'
       
       // Aggregate content by message type
@@ -632,7 +633,7 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
               
               // Handle message objects (start of a new message block)
               if (data.object === 'message') {
-                currentMsgId = data.id || null;
+                _currentMsgId = data.id || null;
                 currentMsgType = data.type || null;
                 
                 // Handle tool use message
@@ -974,37 +975,213 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
     // This would require updating the skills configuration
   }
 
+  /**
+   * Parse CoPaw cron job response into internal CronJob format.
+   * CoPaw stores schedule as { type: "cron", cron: "expr" } and message as `text`.
+   * List items are flat objects; single-get returns { spec, state }.
+   */
+  private parseCoPawCronJob(raw: Record<string, unknown>): CronJob {
+    // Single-get wraps data in { spec, state }
+    const job = (raw.spec ? raw.spec : raw) as Record<string, unknown>;
+    const state = (raw.state ?? {}) as Record<string, unknown>;
+
+    // Extract cron expression from schedule object or string
+    const rawSchedule = job.schedule;
+    let scheduleStr = '';
+    if (rawSchedule && typeof rawSchedule === 'object') {
+      const s = rawSchedule as { type?: string; cron?: string; kind?: string; expr?: string };
+      if (s.cron) scheduleStr = s.cron;
+      else if (s.expr) scheduleStr = s.expr;
+    } else if (typeof rawSchedule === 'string') {
+      scheduleStr = rawSchedule;
+    }
+
+    // CoPaw uses `text` for task_type "text", or `request.input` for task_type "agent"
+    const text = (job.text as string) ?? '';
+    const request = job.request as { 
+      input?: Array<{ content?: Array<{ text?: string }> }> | string; 
+      session_id?: string 
+    } | undefined;
+    
+    // Extract message from request.input array structure
+    let requestMessage = '';
+    if (request?.input) {
+      if (typeof request.input === 'string') {
+        requestMessage = request.input;
+      } else if (Array.isArray(request.input) && request.input.length > 0) {
+        const firstInput = request.input[0];
+        if (firstInput?.content && Array.isArray(firstInput.content) && firstInput.content.length > 0) {
+          requestMessage = firstInput.content[0]?.text || '';
+        }
+      }
+    }
+    const message = text || requestMessage || (typeof job.message === 'string' ? job.message : '') || '';
+
+    // Build lastRun from state
+    let lastRun: CronJob['lastRun'] | undefined;
+    if (state.last_run_at) {
+      lastRun = {
+        time: state.last_run_at as string,
+        success: state.last_status !== 'error',
+        error: (state.last_error as string) || undefined,
+      };
+    }
+
+    // Extract channel and sessionId from dispatch
+    const dispatch = job.dispatch as { channel?: string; target?: { session_id?: string } } | undefined;
+    const channel = dispatch?.channel || 'console';
+    const sessionId = dispatch?.target?.session_id || request?.session_id || 'clawx-cron';
+
+    return {
+      id: job.id as string,
+      name: job.name as string,
+      message,
+      schedule: scheduleStr,
+      enabled: (job.enabled as boolean) ?? true,
+      createdAt: (job.created_at as string) ?? (job.createdAt as string) ?? new Date().toISOString(),
+      updatedAt: (job.updated_at as string) ?? (job.updatedAt as string) ?? new Date().toISOString(),
+      lastRun,
+      nextRun: (state.next_run_at as string) || undefined,
+      channel,
+      sessionId,
+    };
+  }
+
+  /**
+   * Build a full CoPaw API payload for create/update.
+   * CoPaw PUT requires all required fields (id, name, schedule, dispatch).
+   */
+  private buildCoPawCronPayload(fields: {
+    id?: string;
+    name: string;
+    message: string;
+    schedule: string;
+    enabled: boolean;
+    channel?: string;
+    sessionId?: string;
+  }) {
+    const channel = fields.channel || 'console';
+    const sessionId = fields.sessionId || 'clawx-cron';
+
+    return {
+      id: fields.id,
+      name: fields.name,
+      enabled: fields.enabled,
+      schedule: { type: 'cron' as const, cron: fields.schedule },
+      task_type: 'agent' as const,
+      request: {
+        input: [
+          {
+            role: 'user',
+            type: 'message',
+            content: [{ type: 'text', text: fields.message }],
+          },
+        ],
+        session_id: sessionId,
+        user_id: 'clawx-user',
+      },
+      dispatch: {
+        type: 'channel' as const,
+        channel: channel,
+        target: {
+          user_id: 'clawx-user',
+          session_id: sessionId,
+        },
+      },
+    };
+  }
+
   async listCronJobs(): Promise<CronJob[]> {
     const response = await this.httpGet('/api/cron/jobs');
-    
+
     if (!response.ok) {
       throw new Error(`Failed to list cron jobs: ${response.status}`);
     }
 
     const data = await response.json();
-    return (data.jobs || []).map((job: Record<string, unknown>) => ({
-      id: job.id as string,
-      name: job.name as string,
-      schedule: job.schedule as string,
-      enabled: job.enabled as boolean ?? true,
-      lastRun: job.last_run as string,
-      nextRun: job.next_run as string,
-    }));
+    // API returns a plain array or { jobs: [...] }
+    const jobs: Record<string, unknown>[] = Array.isArray(data) ? data : (data.jobs || []);
+    return jobs.map((job) => this.parseCoPawCronJob(job));
+  }
+
+  async getCronJob(jobId: string): Promise<CronJob> {
+    const response = await this.httpGet(`/api/cron/jobs/${jobId}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to get cron job: ${response.status}`);
+    }
+
+    const job = await response.json();
+    return this.parseCoPawCronJob(job as Record<string, unknown>);
   }
 
   async createCronJob(job: Omit<CronJob, 'id'>): Promise<CronJob> {
-    const response = await this.httpPost('/api/cron/jobs', job);
-    
+    const payload = this.buildCoPawCronPayload({
+      id: randomUUID(),
+      name: job.name,
+      message: job.message,
+      schedule: job.schedule,
+      enabled: job.enabled,
+      channel: job.channel,
+      sessionId: job.sessionId,
+    });
+
+    logger.info('Creating CoPaw cron job with payload:', JSON.stringify(payload));
+    const response = await this.httpPost('/api/cron/jobs', payload);
+
     if (!response.ok) {
-      throw new Error(`Failed to create cron job: ${response.status}`);
+      const errorText = await response.text().catch(() => '');
+      throw new Error(`Failed to create cron job: ${response.status} ${errorText}`);
     }
 
-    return await response.json();
+    const created = await response.json();
+    return this.parseCoPawCronJob(created as Record<string, unknown>);
+  }
+
+  /**
+   * Update a cron job. CoPaw PUT requires a full object, so we GET first then merge.
+   */
+  async updateCronJob(jobId: string, update: Partial<Omit<CronJob, 'id' | 'createdAt'>>): Promise<CronJob> {
+    // Fetch current job to get all required fields
+    const current = await this.getCronJob(jobId);
+
+    const payload = this.buildCoPawCronPayload({
+      id: jobId,
+      name: update.name ?? current.name,
+      message: update.message ?? current.message,
+      schedule: update.schedule ?? current.schedule,
+      enabled: update.enabled ?? current.enabled,
+      channel: update.channel ?? current.channel,
+      sessionId: update.sessionId ?? current.sessionId,
+    });
+
+    logger.info(`Updating CoPaw cron job ${jobId} with payload:`, JSON.stringify(payload));
+    const response = await this.httpPut(`/api/cron/jobs/${jobId}`, payload);
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => '');
+      throw new Error(`Failed to update cron job: ${response.status} ${errorText}`);
+    }
+
+    const updated = await response.json();
+    return this.parseCoPawCronJob(updated as Record<string, unknown>);
+  }
+
+  async toggleCronJob(jobId: string, enabled: boolean): Promise<CronJob> {
+    return this.updateCronJob(jobId, { enabled });
+  }
+
+  async triggerCronJob(jobId: string): Promise<void> {
+    const response = await this.httpPost(`/api/cron/jobs/${jobId}/run`, {});
+
+    if (!response.ok) {
+      throw new Error(`Failed to trigger cron job: ${response.status}`);
+    }
   }
 
   async deleteCronJob(jobId: string): Promise<void> {
     const response = await this.httpDelete(`/api/cron/jobs/${jobId}`);
-    
+
     if (!response.ok) {
       throw new Error(`Failed to delete cron job: ${response.status}`);
     }

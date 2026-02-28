@@ -2,7 +2,7 @@
  * Cron Page
  * Manage scheduled tasks
  */
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   Plus,
   Clock,
@@ -30,6 +30,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useCronStore } from '@/stores/cron';
 import { useGatewayStore } from '@/stores/gateway';
+import { useChannelsStore } from '@/stores/channels';
+import { useChatStore } from '@/stores/chat';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { formatRelativeTime, cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -125,21 +127,57 @@ function TaskDialog({ job, onClose, onSave }: TaskDialogProps) {
   const [saving, setSaving] = useState(false);
 
   const [name, setName] = useState(job?.name || '');
-  const [message, setMessage] = useState(job?.message || '');
-  // Extract cron expression string from CronSchedule object or use as-is if string
-  const initialSchedule = (() => {
-    const s = job?.schedule;
-    if (!s) return '0 9 * * *';
-    if (typeof s === 'string') return s;
-    if (typeof s === 'object' && 'expr' in s && typeof (s as { expr: string }).expr === 'string') {
-      return (s as { expr: string }).expr;
-    }
-    return '0 9 * * *';
-  })();
-  const [schedule, setSchedule] = useState(initialSchedule);
+  const [message, setMessage] = useState(typeof job?.message === 'string' ? job.message : '');
+  const [schedule, setSchedule] = useState(job?.schedule || '0 9 * * *');
   const [customSchedule, setCustomSchedule] = useState('');
   const [useCustom, setUseCustom] = useState(false);
   const [enabled, setEnabled] = useState(job?.enabled ?? true);
+
+  // Channel and session selection
+  const [selectedChannel, setSelectedChannel] = useState(job?.channel || 'console');
+  const [selectedSessionId, setSelectedSessionId] = useState(job?.sessionId || '');
+
+  // Fetch channels and sessions
+  const channels = useChannelsStore((s) => s.channels);
+  const fetchChannels = useChannelsStore((s) => s.fetchChannels);
+  const sessions = useChatStore((s) => s.sessions);
+  const loadSessions = useChatStore((s) => s.loadSessions);
+
+  useEffect(() => {
+    fetchChannels();
+    loadSessions();
+  }, [fetchChannels, loadSessions]);
+
+  // Get connected channels
+  const connectedChannels = useMemo(() => 
+    channels.filter(c => c.status === 'connected'),
+    [channels]
+  );
+
+  // Filter sessions by selected channel
+  const filteredSessions = useMemo(() => {
+    if (selectedChannel === 'console') {
+      // Console sessions have channel 'console' or undefined
+      return sessions.filter(s => !s.channel || s.channel === 'console');
+    }
+    return sessions.filter(s => s.channel === selectedChannel);
+  }, [sessions, selectedChannel]);
+
+  // Auto-select first session when channel changes or when no session is selected
+  useEffect(() => {
+    if (filteredSessions.length > 0) {
+      const currentExists = filteredSessions.some(s => (s.sessionId || s.key) === selectedSessionId);
+      if (!currentExists) {
+        setSelectedSessionId(filteredSessions[0].sessionId || filteredSessions[0].key);
+      }
+    } else if (selectedChannel === 'console') {
+      // Default session for console channel
+      setSelectedSessionId('clawx-cron');
+    } else {
+      // Default session ID based on channel
+      setSelectedSessionId(selectedChannel ? `${selectedChannel}-cron` : '');
+    }
+  }, [filteredSessions, selectedSessionId, selectedChannel]);
 
   const handleSubmit = async () => {
     if (!name.trim()) {
@@ -164,6 +202,8 @@ function TaskDialog({ job, onClose, onSave }: TaskDialogProps) {
         message: message.trim(),
         schedule: finalSchedule,
         enabled,
+        channel: selectedChannel,
+        sessionId: selectedSessionId ,
       });
       onClose();
       toast.success(job ? t('toast.updated') : t('toast.created'));
@@ -253,6 +293,51 @@ function TaskDialog({ job, onClose, onSave }: TaskDialogProps) {
             >
               {useCustom ? t('dialog.usePresets') : t('dialog.useCustomCron')}
             </Button>
+          </div>
+
+          {/* Channel Selector */}
+          <div className="space-y-2">
+            <Label>{t('dialog.channel', 'Target Channel')}</Label>
+            <select
+              value={selectedChannel}
+              onChange={(e) => setSelectedChannel(e.target.value)}
+              className={cn(
+                'w-full rounded-md border border-input bg-background px-3 py-2',
+                'text-sm focus:outline-none focus:ring-2 focus:ring-ring',
+              )}
+            >
+              <option value="console">ClawX Chat</option>
+              {connectedChannels
+                .filter(c => (c.type as string) !== 'console' && !c.id.startsWith('console'))
+                .map(c => (
+                  <option key={c.id} value={c.id}>
+                    {CHANNEL_ICONS[c.type] || ''} {c.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* Session Selector */}
+          <div className="space-y-2">
+            <Label>{t('dialog.session', 'Session')}</Label>
+            <select
+              value={selectedSessionId}
+              onChange={(e) => setSelectedSessionId(e.target.value)}
+              className={cn(
+                'w-full rounded-md border border-input bg-background px-3 py-2',
+                'text-sm focus:outline-none focus:ring-2 focus:ring-ring',
+              )}
+            >
+              {filteredSessions.length === 0 ? (
+                <option value="clawx-cron">{t('dialog.defaultSession', 'Default Session')}</option>
+              ) : (
+                filteredSessions.map(s => (
+                  <option key={s.key} value={s.sessionId || s.key}>
+                    {s.displayName || s.label || s.key}
+                  </option>
+                ))
+              )}
+            </select>
           </div>
 
           {/* Enabled */}
@@ -366,7 +451,7 @@ function CronJobCard({ job, onToggle, onEdit, onDelete, onTrigger }: CronJobCard
         <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
           <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
           <p className="text-sm text-muted-foreground line-clamp-2">
-            {job.message}
+            {typeof job.message === 'string' ? job.message : JSON.stringify(job.message)}
           </p>
         </div>
 

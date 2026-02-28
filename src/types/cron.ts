@@ -1,6 +1,9 @@
 /**
  * Cron Job Type Definitions
  * Types for scheduled tasks
+ *
+ * Note: The frontend uses a simplified internal format.
+ * Conversion to/from CoPaw API format happens in copaw-backend.ts.
  */
 
 import { ChannelType } from './channel';
@@ -33,32 +36,39 @@ export type CronSchedule =
   | { kind: 'cron'; expr: string; tz?: string };
 
 /**
- * Cron job data structure
- * schedule can be a plain cron string or a Gateway CronSchedule object
+ * Cron job data structure - internal UI format.
+ * CoPaw API uses a different format; conversion is in copaw-backend.ts.
  */
 export interface CronJob {
   id: string;
   name: string;
   message: string;
-  schedule: string | CronSchedule;
-  target?: CronJobTarget;
+  schedule: string;
   enabled: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   lastRun?: CronJobLastRun;
   nextRun?: string;
+  target?: CronJobTarget;
+  /** Target channel for task execution (e.g., 'console', 'telegram') */
+  channel?: string;
+  /** Target session ID for task execution */
+  sessionId?: string;
 }
 
 /**
  * Input for creating a cron job from the UI.
- * No target/delivery — UI-created tasks push results to the ClawX chat page.
- * Tasks created via external channels are handled directly by the Gateway.
+ * UI-created tasks push results to the ClawX chat page.
  */
 export interface CronJobCreateInput {
   name: string;
   message: string;
   schedule: string;
   enabled?: boolean;
+  /** Target channel (defaults to 'console') */
+  channel?: string;
+  /** Target session ID */
+  sessionId?: string;
 }
 
 /**
@@ -69,6 +79,10 @@ export interface CronJobUpdateInput {
   message?: string;
   schedule?: string;
   enabled?: boolean;
+  /** Target channel */
+  channel?: string;
+  /** Target session ID */
+  sessionId?: string;
 }
 
 /**

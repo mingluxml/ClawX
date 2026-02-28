@@ -5,14 +5,293 @@ Error occurred in handler for 'media:getThumbnails': Error: No handler registere
 Error occurred in handler for 'media:getThumbnails': Error: No handler registered for 'media:getThumbnails'
     at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
     at Session.emit (node:events:508:28)
-[2026-02-28T14:55:26.413Z] [WARN ] No session file found for: agent:main:session-1772290520429
+Error occurred in handler for 'channel:validateCredentials': Error: No handler registered for 'channel:validateCredentials'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[97719:0301/020346.193213:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[441:0301/020346.268553:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[441:0301/020346.268947:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[442:0301/020354.703330:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[442:0301/020354.705093:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3487:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[625:0301/020403.043670:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[625:0301/020403.043748:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[625:0301/020403.043821:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[625:0301/020403.043840:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+Error occurred in handler for 'channel:deleteConfig': Error: No handler registered for 'channel:deleteConfig'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T18:05:38.106Z] [ERROR] CoPaw RPC error (channels.delete): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[623:0301/020631.119851:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[623:0301/020631.226526:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3487:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1579:16)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2473:0301/020640.250132:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[2473:0301/020640.360936:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
 Error occurred in handler for 'media:getThumbnails': Error: No handler registered for 'media:getThumbnails'
     at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
     at Session.emit (node:events:508:28)
+[2624:0301/020659.096010:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[2624:0301/020659.096179:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[2624:0301/020659.096344:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[2624:0301/020659.096385:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+Error occurred in handler for 'channel:deleteConfig': Error: No handler registered for 'channel:deleteConfig'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T18:07:06.832Z] [ERROR] CoPaw RPC error (channels.delete): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2623:0301/020936.006310:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[2623:0301/020936.009384:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3487:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1579:16)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[4435:0301/020941.711682:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[4435:0301/020941.820444:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3487:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
 Error occurred in handler for 'media:getThumbnails': Error: No handler registered for 'media:getThumbnails'
     at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
     at Session.emit (node:events:508:28)
-[2026-02-28T14:56:27.281Z] [WARN ] No session file found for: agent:main:session-1772290585825
+[4541:0301/020957.882343:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[4541:0301/020957.882479:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[4541:0301/020957.882606:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[4541:0301/020957.882635:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+Error occurred in handler for 'channel:saveConfig': Error: No handler registered for 'channel:saveConfig'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[4538:0301/021220.357882:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[4538:0301/021220.359800:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[6117:0301/021225.673395:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6117:0301/021225.675666:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3487:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3462:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[6215:0301/021229.105655:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6215:0301/021229.105716:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6215:0301/021229.105778:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6215:0301/021229.105792:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6212:0301/021237.313156:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6212:0301/021237.314901:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[6350:0301/021242.735535:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6350:0301/021242.737159:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3611:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3586:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T18:12:42.851Z] [ERROR] CoPaw start failed: CoPaw process exited before becoming ready
+Error: CoPaw process exited before becoming ready
+    at CoPawBackend.waitForReady (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1606:15)
+    at async CoPawBackend.start (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:724:7)
+    at async initialize (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4865:5)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3586:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.start (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:730:12)
+    at async initialize (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4865:5)
+[2026-02-28T18:12:42.851Z] [ERROR] CoPaw backend auto-start failed: CoPaw process exited before becoming ready
+Error: CoPaw process exited before becoming ready
+    at CoPawBackend.waitForReady (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1606:15)
+    at async CoPawBackend.start (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:724:7)
+    at async initialize (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4865:5)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at initialize (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4869:29)
+Error occurred in handler for 'media:getThumbnails': Error: No handler registered for 'media:getThumbnails'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T18:13:14.470Z] [ERROR] CoPaw RPC error (channels.add): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[6425:0301/021319.234058:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6425:0301/021319.234185:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6425:0301/021319.234662:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6425:0301/021319.234689:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:530] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[6424:0301/021458.443116:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6424:0301/021458.444689:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3611:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1577:14)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3586:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at ChildProcess.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1579:16)
+    at ChildProcess.emit (node:events:520:35)
+    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3586:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1872:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1531:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:782:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[7825:0301/021508.619315:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[7825:0301/021508.620909:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error occurred in handler for 'media:getThumbnails': Error: No handler registered for 'media:getThumbnails'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
 Error occurred in handler for 'media:getThumbnails': Error: No handler registered for 'media:getThumbnails'
     at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
     at Session.emit (node:events:508:28)

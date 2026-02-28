@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dev)",
+      "Bash(pkill -f vite || true)",
+      "Bash(lsof -ti:8088 | xargs kill -9 2>/dev/null || true)",
+      "Bash(pnpm run dev)",
+      "Bash(curl -s http://127.0.0.1:8088/api/cron/jobs | jq -r)",
+      "Bash(curl -s http://127.0.0.1:8088/api/cron/jobs)",
+      "Bash(curl -v http://127.0.0.1:8088/api/cron/jobs)",
+      "Bash(curl -X POST http://127.0.0.1:8088/api/cron/jobs -H \"Content-Type: application/json\" -d '{\"name\":\"测试任务\",\"schedule\":\"0 9 * * *\",\"enabled\":true,\"message\":\"早上好！这是一个测试定时任务\"}')",
+      "Bash(curl -X POST http://127.0.0.1:8088/api/cron/jobs -H \"Content-Type: application/json\" -d '{\"name\":\"测试任务\",\"schedule\":{\"kind\":\"cron\",\"expr\":\"0 9 * * *\"},\"message\":\"早上好！这是一个测试定时任务\",\"enabled\":true,\"dispatch\":{\"type\":\"console\",\"message\":\"早上好！这是一个测试定时任务\"}}')",
+      "Bash(pnpm run dev:electron)",
+      "Bash(curl -X GET http://127.0.0.1:8088/docs)",
+      "Bash(curl -X POST http://127.0.0.1:8088/api/cron/jobs -H \"Content-Type: application/json\" -d '{\"id\": \"test-job-001\", \"name\": \"测试定时任务\", \"schedule\": {\"type\":\"cron\",\"cron\":\"0 9 * * *\",\"timezone\":\"Asia/Shanghai\"}, \"task_type\":\"text\",\"text\":\"早上好，这是每日问候\",\"dispatch\":{\"type\":\"channel\",\"channel\":\"console\",\"target\":{\"user_id\":\"test-user\",\"session_id\":\"test-session\"}},\"enabled\":true}')",
+      "Bash(curl -X PUT http://127.0.0.1:8088/api/cron/jobs/e0141a42-468f-40a2-82c5-3f497c86daab -H \"Content-Type: application/json\" -d '{\"id\":\"e0141a42-468f-40a2-82c5-3f497c86daab\",\"name\":\"更新后的测试任务\",\"schedule\":{\"type\":\"cron\",\"cron\":\"0 10 * * *\"},\"task_type\":\"text\",\"text\":\"更新后的每日问候\",\"disabled\":false,\"dispatch\":{\"type\":\"channel\",\"channel\":\"console\",\"target\":{\"user_id\":\"test-user\",\"session_id\":\"test-session\"}},\"enabled\":true}')",
+      "Bash(curl -X DELETE http://127.0.0.1:8088/api/cron/jobs/e0141a42-468f-40a2-82c5-3f497c86daab)",
+      "Bash(curl -s http://127.0.0.1:5173/api/cron/jobs)",
+      "Bash(curl -s http://127.0.0.1:8088/version || echo \"重新启动CoPaw\")",
+      "Bash(curl -s http://127.0.0.1:8088/api/cron/jobs ?verbose)"
+    ]
+  }
+}

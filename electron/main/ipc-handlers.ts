@@ -21,12 +21,12 @@ import {
   type ProviderConfig,
 } from '../utils/secure-storage';
 import { ensureDir } from '../utils/paths';
-import { getCoPawHomeDir, getCoPawSkillsDir, getCoPawCustomizedSkillsDir, getCoPawStatus, getCoPawConfigPath } from '../utils/copaw-paths';
+import { getCoPawHomeDir, getCoPawCustomizedSkillsDir, getCoPawStatus, getCoPawConfigPath } from '../utils/copaw-paths';
 import { logger } from '../utils/logger';
 import { checkUvInstalled, installUv, setupManagedPython } from '../utils/uv-setup';
 import { getProviderConfig } from '../utils/provider-registry';
 import { deviceOAuthManager, OAuthProviderType } from '../utils/device-oauth';
-import { listConfiguredChannels, getChannelFormValues } from '../utils/channel-config';
+import { listConfiguredChannels, getChannelFormValues, saveChannelConfig } from '../utils/channel-config';
 import { getAllSkillConfigs } from '../utils/skill-config';
 import { importSkillFromUrl } from '../utils/skill-importer';
 
@@ -643,8 +643,22 @@ function registerCronHandlers(backendManager: BackendManager): void {
     }
   });
 
+  // Get specific cron job
+  ipcMain.handle('cron:get', async (_, jobId: string) => {
+    try {
+      const backend = backendManager.getBackend();
+      if (!backend) {
+        return { success: false, error: 'Backend not initialized' };
+      }
+      const job = await backend.getCronJob(jobId);
+      return { success: true, job };
+    } catch (error) {
+      return { success: false, error: String(error) };
+    }
+  });
+
   // Create cron job
-  ipcMain.handle('cron:create', async (_, job: { name: string; schedule: string; enabled?: boolean }) => {
+  ipcMain.handle('cron:create', async (_, job: { name: string; message: string; schedule: string; enabled?: boolean; channel?: string; sessionId?: string }) => {
     try {
       const backend = backendManager.getBackend();
       if (!backend) {
@@ -652,10 +666,60 @@ function registerCronHandlers(backendManager: BackendManager): void {
       }
       const created = await backend.createCronJob({
         name: job.name,
+        message: job.message,
         schedule: job.schedule,
         enabled: job.enabled ?? true,
+        channel: job.channel || 'console',
+        sessionId: job.sessionId || 'clawx-cron',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
       return { success: true, job: created };
+    } catch (error) {
+      return { success: false, error: String(error) };
+    }
+  });
+
+  // Update cron job
+  ipcMain.handle('cron:update', async (_, jobId: string, update: { name?: string; message?: string; schedule?: string; enabled?: boolean; channel?: string; sessionId?: string }) => {
+    try {
+      const backend = backendManager.getBackend();
+      if (!backend) {
+        return { success: false, error: 'Backend not initialized' };
+      }
+      const updated = await backend.updateCronJob(jobId, {
+        ...update,
+        updatedAt: new Date().toISOString(),
+      });
+      return { success: true, job: updated };
+    } catch (error) {
+      return { success: false, error: String(error) };
+    }
+  });
+
+  // Toggle cron job
+  ipcMain.handle('cron:toggle', async (_, jobId: string, enabled: boolean) => {
+    try {
+      const backend = backendManager.getBackend();
+      if (!backend) {
+        return { success: false, error: 'Backend not initialized' };
+      }
+      const job = await backend.toggleCronJob(jobId, enabled);
+      return { success: true, job };
+    } catch (error) {
+      return { success: false, error: String(error) };
+    }
+  });
+
+  // Trigger cron job
+  ipcMain.handle('cron:trigger', async (_, jobId: string) => {
+    try {
+      const backend = backendManager.getBackend();
+      if (!backend) {
+        return { success: false, error: 'Backend not initialized' };
+      }
+      await backend.triggerCronJob(jobId);
+      return { success: true };
     } catch (error) {
       return { success: false, error: String(error) };
     }
@@ -705,6 +769,125 @@ function registerChannelHandlers(): void {
   // Cancel WhatsApp QR scanning (no-op for CoPaw)
   ipcMain.handle('channel:cancelWhatsAppQr', async () => {
     return { success: true };
+  });
+
+  // Save channel configuration
+  ipcMain.handle('channel:saveConfig', async (_, channelType: string, config: Record<string, unknown>) => {
+    try {
+      await saveChannelConfig(channelType, config);
+      return { success: true };
+    } catch (error) {
+      logger.error('Failed to save channel config:', error);
+      return { success: false, error: String(error) };
+    }
+  });
+
+  // Validate channel credentials
+  ipcMain.handle('channel:validateCredentials', async (_, channelType: string, configValues: Record<string, string>) => {
+    try {
+      const errors: string[] = [];
+      const warnings: string[] = [];
+      const details: Record<string, string> = {};
+
+      // Basic validation based on channel type
+      switch (channelType) {
+        case 'telegram':
+          if (!configValues.botToken) {
+            errors.push('Bot token is required');
+          } else if (!/^\d+:[A-Za-z0-9_-]+$/.test(configValues.botToken)) {
+            errors.push('Invalid bot token format');
+          } else {
+            // Try to validate with Telegram API
+            try {
+              const response = await fetch(`https://api.telegram.org/bot${configValues.botToken}/getMe`);
+              const data = await response.json() as { ok: boolean; result?: { username?: string } };
+              if (data.ok && data.result) {
+                details.botUsername = data.result.username || 'Unknown';
+              } else {
+                errors.push('Invalid bot token - could not verify with Telegram');
+              }
+            } catch {
+              warnings.push('Could not verify bot token with Telegram API');
+            }
+          }
+          break;
+
+        case 'discord':
+          if (!configValues.botToken) {
+            errors.push('Bot token is required');
+          }
+          if (!configValues.guildId) {
+            errors.push('Server ID is required');
+          }
+          break;
+
+        case 'whatsapp':
+          // WhatsApp uses QR code authentication, no credentials to validate
+          warnings.push('WhatsApp requires QR code scanning for authentication');
+          break;
+
+        case 'slack':
+          if (!configValues.botToken) {
+            errors.push('Bot token is required');
+          } else if (!configValues.botToken.startsWith('xoxb-')) {
+            errors.push('Invalid Slack bot token format (should start with xoxb-)');
+          }
+          break;
+
+        case 'feishu':
+        case 'lark':
+          if (!configValues.appId) {
+            errors.push('App ID is required');
+          }
+          if (!configValues.appSecret) {
+            errors.push('App Secret is required');
+          }
+          // Validate with Feishu API - block save if validation fails
+          if (configValues.appId && configValues.appSecret && errors.length === 0) {
+            try {
+              const response = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                body: JSON.stringify({
+                  app_id: configValues.appId,
+                  app_secret: configValues.appSecret,
+                }),
+              });
+              const data = await response.json() as { code: number; msg?: string; tenant_access_token?: string };
+              if (data.code === 0 && data.tenant_access_token) {
+                details.appId = configValues.appId;
+              } else {
+                // API validation failed - block save
+                errors.push(`Feishu API: ${data.msg || 'Invalid credentials'}`);
+              }
+            } catch (err) {
+              // Network error - show as warning (allow save)
+              warnings.push(`Could not connect to Feishu API: ${err instanceof Error ? err.message : 'Network error'}`);
+            }
+          }
+          break;
+
+        default:
+          warnings.push(`Validation not implemented for channel type: ${channelType}`);
+      }
+
+      return {
+        success: true,
+        valid: errors.length === 0,
+        errors,
+        warnings,
+        details,
+      };
+    } catch (error) {
+      logger.error('Failed to validate channel credentials:', error);
+      return {
+        success: false,
+        valid: false,
+        errors: [String(error)],
+        warnings: [],
+        details: {},
+      };
+    }
   });
 }
 

@@ -58,6 +58,10 @@ export interface ChatSession {
   displayName?: string;
   thinkingLevel?: string;
   model?: string;
+  /** Channel this session belongs to (e.g., 'console', 'telegram') */
+  channel?: string;
+  /** Session ID used for CoPaw API */
+  sessionId?: string;
 }
 
 export interface ToolStatus {
@@ -1017,6 +1021,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
           displayName: s.displayName ? String(s.displayName) : undefined,
           thinkingLevel: s.thinkingLevel ? String(s.thinkingLevel) : undefined,
           model: s.model ? String(s.model) : undefined,
+          channel: s.channel ? String(s.channel) : undefined,
+          sessionId: s.sessionId ? String(s.sessionId) : undefined,
         })).filter((s: ChatSession) => s.key);
 
         const canonicalBySuffix = new Map<string, string>();
