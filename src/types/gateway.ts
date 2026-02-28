@@ -1,13 +1,19 @@
 /**
- * Gateway Type Definitions
- * Types for Gateway communication and data structures
+ * Gateway/Backend Type Definitions
+ * Types for Backend communication and data structures
+ * Compatible with both OpenClaw and CoPaw backends
  */
 
 /**
- * Gateway connection status
+ * Backend type
+ */
+export type BackendType = 'openclaw' | 'copaw';
+
+/**
+ * Gateway/Backend connection status
  */
 export interface GatewayStatus {
-  state: 'stopped' | 'starting' | 'running' | 'error' | 'reconnecting';
+  state: 'stopped' | 'starting' | 'running' | 'error' | 'reconnecting' | 'installing';
   port: number;
   pid?: number;
   uptime?: number;
@@ -15,6 +21,7 @@ export interface GatewayStatus {
   connectedAt?: number;
   version?: string;
   reconnectAttempts?: number;
+  backendType?: BackendType;
 }
 
 /**
@@ -50,9 +57,30 @@ export interface GatewayNotification {
 export interface ProviderConfig {
   id: string;
   name: string;
-  type: 'openai' | 'anthropic' | 'ollama' | 'custom';
+  type: 'openai' | 'anthropic' | 'ollama' | 'custom' | 'dashscope' | 'qwen';
   apiKey?: string;
   baseUrl?: string;
   model?: string;
   enabled: boolean;
+}
+
+/**
+ * Installation progress event
+ */
+export interface InstallProgress {
+  stage: 'preparing' | 'creating-venv' | 'installing-copaw' | 'initializing' | 'complete' | 'error';
+  progress: number;
+  message: string;
+  error?: string;
+}
+
+/**
+ * CoPaw status
+ */
+export interface CoPawStatus {
+  installed: boolean;
+  venvExists: boolean;
+  binPath: string;
+  homeDir: string;
+  version?: string;
 }

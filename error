@@ -1,0 +1,731 @@
+
+> clawx@0.2.0-alpha.1 dev /Users/xml/Desktop/code/xml/ClawX
+> vite
+
+
+  VITE v6.4.1  ready in 187 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+vite v7.3.1 building client environment for development...
+
+watching for file changes...
+vite v7.3.1 building client environment for development...
+
+watching for file changes...
+
+build started...
+
+build started...
+transforming...
+transforming...
+✓ 1 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-electron/preload/index.js  6.17 kB │ gzip: 1.59 kB
+built in 64ms.
+✓ 21 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-electron/main/index.js  117.93 kB │ gzip: 25.39 kB
+built in 188ms.
+[2026-02-28T10:00:33.046Z] [INFO ] [Updater] Version: 0.2.0-alpha.1, channel: alpha, feedUrl: https://oss.intelli-spectrum.com/alpha
+[2026-02-28T10:00:33.130Z] [INFO ] === ClawX Application Starting ===
+[2026-02-28T10:00:33.130Z] [DEBUG] Runtime: platform=darwin/arm64, electron=40.6.0, node=24.13.1, packaged=false
+[2026-02-28T10:00:33.149Z] [INFO ] Region optimization enabled via locale/timezone (locale=zh-CN, tz=Asia/Shanghai)
+[2026-02-28T10:00:33.246Z] [DEBUG] Auto-starting CoPaw backend...
+[2026-02-28T10:00:33.246Z] [INFO ] Initializing backend: copaw
+[2026-02-28T10:00:33.246Z] [INFO ] Backend initialized: copaw
+[2026-02-28T10:00:33.246Z] [DEBUG] CoPaw state changed: stopped -> starting
+[2026-02-28T10:00:33.299Z] [INFO ] Found existing CoPaw service on port 8088
+[2026-02-28T10:00:33.325Z] [DEBUG] CoPaw state changed: starting -> running
+[2026-02-28T10:00:33.325Z] [INFO ] CoPaw backend auto-start succeeded
+ ELIFECYCLE  Command failed.
+[2026-02-28T10:01:12.968Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Error occurred in handler for 'skill:getAllConfigs': Error: No handler registered for 'skill:getAllConfigs'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:01:12.974Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Error occurred in handler for 'skill:getAllConfigs': Error: No handler registered for 'skill:getAllConfigs'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:listConfigured': Error: No handler registered for 'channel:listConfigured'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:listConfigured': Error: No handler registered for 'channel:listConfigured'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:01:14.199Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:14.200Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:14.790Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:14.790Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Error occurred in handler for 'skill:getAllConfigs': Error: No handler registered for 'skill:getAllConfigs'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'skill:getAllConfigs': Error: No handler registered for 'skill:getAllConfigs'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:listConfigured': Error: No handler registered for 'channel:listConfigured'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:listConfigured': Error: No handler registered for 'channel:listConfigured'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:01:15.169Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:15.170Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:15.786Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:15.786Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Error occurred in handler for 'skill:getAllConfigs': Error: No handler registered for 'skill:getAllConfigs'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:01:15.801Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:01:15.801Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Error occurred in handler for 'skill:getAllConfigs': Error: No handler registered for 'skill:getAllConfigs'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:04:39.462Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:04:39.462Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:03.669Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:03.669Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:17.908Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:17.908Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:20.438Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:20.439Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:20.451Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:20.452Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:22.029Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:07:22.029Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Error occurred in handler for 'channel:getFormValues': Error: No handler registered for 'channel:getFormValues'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:getFormValues': Error: No handler registered for 'channel:getFormValues'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:getFormValues': Error: No handler registered for 'channel:getFormValues'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:getFormValues': Error: No handler registered for 'channel:getFormValues'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:08:28.886Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:08:28.886Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:11:49.241Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:11:49.241Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:12:05.749Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:12:06.236Z] [ERROR] CoPaw RPC error (skills.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[94591:0228/181508.013690:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[94591:0228/181508.016478:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[949:0228/181508.111948:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[949:0228/181508.112423:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[950:0228/181508.111980:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[950:0228/181508.112476:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[2026-02-28T10:15:42.598Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:15:42.599Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[951:0228/181621.368900:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[951:0228/181621.371067:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[2026-02-28T10:16:35.558Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:16:35.559Z] [ERROR] CoPaw RPC error (channels.status): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[1779:0228/181734.253442:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[1779:0228/181734.255203:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[2580:0228/181801.798964:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[2580:0228/181801.904710:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[2026-02-28T10:18:22.531Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:18:22.532Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:getFormValues': Error: No handler registered for 'channel:getFormValues'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:getFormValues': Error: No handler registered for 'channel:getFormValues'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+Error occurred in handler for 'channel:cancelWhatsAppQr': Error: No handler registered for 'channel:cancelWhatsAppQr'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116556)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:19:20.214Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:19:20.215Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:22:50.867Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:22:50.868Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:23:17.006Z] [ERROR] CoPaw RPC error (skills.update): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:23:20.588Z] [ERROR] CoPaw RPC error (skills.update): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:23:21.680Z] [ERROR] CoPaw RPC error (skills.update): Unexpected token '<', "<!doctype "... is not valid JSON
+SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:4259:19)
+    at successSteps (node:internal/deps/undici/undici:6882:27)
+    at readAllBytes (node:internal/deps/undici/undici:5807:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[2026-02-28T10:23:23.087Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:23:23.087Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:23:33.919Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:23:33.921Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[5615:0228/182400.894415:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[5615:0228/182400.895914:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[6329:0228/182414.116690:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6329:0228/182414.118702:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[6607:0228/182443.212992:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6607:0228/182443.215783:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2893:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1567:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1226:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1622:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4020:23)
+[2026-02-28T10:25:54.403Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:25:54.404Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:25:55.242Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:25:55.243Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:25:56.604Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[2026-02-28T10:25:56.605Z] [ERROR] Failed to fetch channels.status: getCoPawConfigPath is not defined
+ReferenceError: getCoPawConfigPath is not defined
+    at CoPawBackend.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:899:28)
+    at BackendManager.rpc (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1653:25)
+    at file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2831:44
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:116459)
+    at Session.emit (node:events:508:28)
+[6793:0228/182601.288790:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[6793:0228/182601.290044:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[7499:0228/182601.465831:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[7499:0228/182601.466703:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[7500:0228/182601.469157:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[7500:0228/182601.469587:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[7503:0228/182624.039763:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[7503:0228/182624.042411:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2893:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1567:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1226:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1622:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4020:23)
+[7718:0228/182727.367556:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[7718:0228/182727.369195:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[8300:0228/182727.485633:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[8301:0228/182727.485681:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[8301:0228/182727.486156:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[8300:0228/182727.486128:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[8304:0228/182732.399484:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[8304:0228/182732.402515:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2893:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1567:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1226:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1622:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4020:23)
+[8366:0228/182736.000113:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[8366:0228/182736.009385:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2893:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1567:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1226:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1622:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4020:23)
+[8422:0228/182745.961650:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[8422:0228/182746.067189:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[8542:0228/182815.538108:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[8542:0228/182815.539728:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[8910:0228/182837.801162:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[8910:0228/182837.804295:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2943:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1572:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1231:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1627:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4082:23)
+[9171:0228/183125.327785:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[9171:0228/183125.434144:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[10761:0228/183201.940476:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[10761:0228/183201.942071:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2957:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4096:23)
+[11149:0228/183208.373583:ERROR:base/process/process_mac.cc:98] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)
+[11149:0228/202344.541284:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[73836:0228/202344.684054:ERROR:base/apple/mach_port_rendezvous_mac.cc:253] bootstrap_look_up com.github.Electron.MachPortRendezvousServer.1: Unknown service name (1102)
+[73836:0228/202344.684556:ERROR:base/memory/shared_memory_switch.cc:266] No rendezvous client, terminating process (parent died?)
+[73837:0228/202353.349796:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:2957:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4096:23)
+[73837:0228/202353.389307:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[73938:0228/202356.231408:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[73938:0228/202356.233552:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3078:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4229:23)
+[73972:0228/202958.274324:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[73972:0228/202958.276116:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[77476:0228/203019.849365:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[77476:0228/203019.851861:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3159:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4310:23)
+[77694:0228/203027.127122:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3159:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4310:23)
+[77694:0228/203027.240497:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[77784:0228/203032.625264:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[77784:0228/203032.626367:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3170:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4321:23)
+[78850:0228/203437.334281:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[78850:0228/203437.335885:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[80393:0228/203442.593880:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3170:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4321:23)
+[80393:0228/203442.704743:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[80446:0228/203448.217351:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[80446:0228/203448.219246:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3170:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1586:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1245:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:784:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1641:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4321:23)
+[80508:0228/203527.902402:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3173:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1589:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1248:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:787:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1644:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4324:23)
+[80508:0228/203528.011964:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[80888:0228/203721.985385:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[80888:0228/203721.987285:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+[81897:0228/203727.274869:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[81897:0228/203727.277025:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3173:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1589:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1248:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:787:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1644:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4324:23)
+[81963:0228/203729.430736:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+[81963:0228/203729.432002:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3173:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1589:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1248:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:787:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1644:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4324:23)
+[81998:0228/203738.370839:ERROR:content/browser/gpu/gpu_process_host.cc:1004] GPU process exited unexpectedly: exit_code=15
+Error sending from webFrameMain:  Error: Render frame was disposed before WebFrameMain could be accessed
+    at s.send (node:electron/js2c/browser_init:2:103618)
+    at b.send (node:electron/js2c/browser_init:2:88039)
+    at BackendManager.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:3167:31)
+    at BackendManager.emit (node:events:508:28)
+    at CoPawBackend.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1583:14)
+    at CoPawBackend.emit (node:events:508:28)
+    at CoPawBackend.setStatus (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1242:10)
+    at CoPawBackend.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:781:10)
+    at BackendManager.stop (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:1638:26)
+    at EventEmitter.<anonymous> (file:///Users/xml/Desktop/code/xml/ClawX/dist-electron/main/index.js:4318:23)
+[81998:0228/203738.478825:ERROR:content/browser/network_service_instance_impl.cc:610] Network service crashed or was terminated, restarting service.

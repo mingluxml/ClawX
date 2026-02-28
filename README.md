@@ -6,7 +6,7 @@
 <h1 align="center">ClawX</h1>
 
 <p align="center">
-  <strong>The Desktop Interface for OpenClaw AI Agents</strong>
+  <strong>The Desktop Interface for CoPaw AI Agents</strong>
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@
 
 ## Overview
 
-**ClawX** bridges the gap between powerful AI agents and everyday users. Built on top of [OpenClaw](https://github.com/OpenClaw), it transforms command-line AI orchestration into an accessible, beautiful desktop experience—no terminal required.
+**ClawX** bridges the gap between powerful AI agents and everyday users. Built on top of [CoPaw](https://github.com/CopilotPaw/CoPaw), it transforms command-line AI orchestration into an accessible, beautiful desktop experience—no terminal required.
 
 Whether you're automating workflows, managing AI-powered channels, or scheduling intelligent tasks, ClawX provides the interface you need to harness AI agents effectively.
 
@@ -84,11 +84,11 @@ Building AI agents shouldn't require mastering the command line. ClawX was desig
 | Multiple AI providers | Unified provider configuration panel |
 | Skill/plugin installation | Built-in skill marketplace and management |
 
-### OpenClaw Inside
+### CoPaw Inside
 
-ClawX is built directly upon the official **OpenClaw** core. Instead of requiring a separate installation, we embed the runtime within the application to provide a seamless "battery-included" experience.
+ClawX is built directly upon the official **CoPaw** core. Instead of requiring a separate installation, we embed the runtime within the application to provide a seamless "battery-included" experience.
 
-We are committed to maintaining strict alignment with the upstream OpenClaw project, ensuring that you always have access to the latest capabilities, stability improvements, and ecosystem compatibility provided by the official releases.
+We are committed to maintaining strict alignment with the upstream CoPaw project, ensuring that you always have access to the latest capabilities, stability improvements, and ecosystem compatibility provided by the official releases.
 
 ---
 
@@ -186,7 +186,7 @@ ClawX employs a **dual-process architecture** that separates UI concerns from AI
                                │ WebSocket (JSON-RPC)
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                     OpenClaw Gateway                             │
+│                     CoPaw Gateway                                │
 │                                                                  │
 │  • AI agent runtime and orchestration                           │
 │  • Message channel management                                    │
@@ -233,7 +233,7 @@ Chain multiple skills together to create sophisticated automation pipelines. Pro
 ClawX/
 ├── electron/              # Electron Main Process
 │   ├── main/             # Application entry, window management
-│   ├── gateway/          # OpenClaw Gateway process manager
+│   ├── gateway/          # CoPaw Gateway process manager
 │   ├── preload/          # Secure IPC bridge scripts
 │   └── utils/            # Utilities (storage, auth, paths)
 ├── src/                   # React Renderer Process
@@ -323,7 +323,7 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
 
 ClawX is built on the shoulders of excellent open-source projects:
 
-- [OpenClaw](https://github.com/OpenClaw) – The AI agent runtime
+- [CoPaw](https://github.com/CopilotPaw/CoPaw) – The AI agent runtime
 - [Electron](https://www.electronjs.org/) – Cross-platform desktop framework
 - [React](https://react.dev/) – UI component library
 - [shadcn/ui](https://ui.shadcn.com/) – Beautifully designed components

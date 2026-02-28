@@ -1,17 +1,14 @@
 {
     "name": "clawx",
-    "version": "0.1.19-alpha.5",
+    "version": "0.2.0-alpha.1",
+    "type": "module",
     "pnpm": {
         "onlyBuiltDependencies": [
-            "@whiskeysockets/baileys",
             "electron",
-            "esbuild",
-            "node-llama-cpp",
-            "protobufjs",
-            "sharp"
+            "esbuild"
         ]
     },
-    "description": "ClawX - Graphical AI Assistant based on OpenClaw",
+    "description": "ClawX - Graphical AI Assistant based on CoPaw",
     "main": "dist-electron/main/index.js",
     "author": "ClawX Team",
     "license": "MIT",
@@ -19,9 +16,8 @@
     "scripts": {
         "init": "pnpm install && pnpm run uv:download",
         "dev": "vite",
-        "build": "vite build && zx scripts/bundle-openclaw.mjs && zx scripts/bundle-openclaw-plugins.mjs && electron-builder",
+        "build": "vite build && electron-builder",
         "build:vite": "vite build",
-        "bundle:openclaw-plugins": "zx scripts/bundle-openclaw-plugins.mjs",
         "lint": "eslint . --fix",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
@@ -32,21 +28,19 @@
         "uv:download:linux": "zx scripts/download-bundled-uv.mjs --platform=linux",
         "uv:download:all": "zx scripts/download-bundled-uv.mjs --all",
         "icons": "zx scripts/generate-icons.mjs",
-        "package": "vite build && zx scripts/bundle-openclaw.mjs && zx scripts/bundle-openclaw-plugins.mjs && electron-builder",
-        "package:mac": "vite build && zx scripts/bundle-openclaw.mjs && zx scripts/bundle-openclaw-plugins.mjs && electron-builder --mac",
-        "package:win": "vite build && zx scripts/bundle-openclaw.mjs && zx scripts/bundle-openclaw-plugins.mjs && electron-builder --win",
-        "package:linux": "vite build && zx scripts/bundle-openclaw.mjs && zx scripts/bundle-openclaw-plugins.mjs && electron-builder --linux",
-        "release": "pnpm run uv:download && vite build && zx scripts/bundle-openclaw.mjs && zx scripts/bundle-openclaw-plugins.mjs && electron-builder --publish always",
+        "package": "vite build && electron-builder",
+        "package:mac": "vite build && electron-builder --mac",
+        "package:win": "vite build && electron-builder --win",
+        "package:linux": "vite build && electron-builder --linux",
+        "release": "pnpm run uv:download && vite build && electron-builder --publish always",
         "version:patch": "pnpm version patch",
         "version:minor": "pnpm version minor",
         "version:major": "pnpm version major",
         "postversion": "git push && git push --tags"
     },
     "dependencies": {
-        "clawhub": "^0.5.0",
         "electron-store": "^11.0.2",
-        "electron-updater": "^6.8.3",
-        "ws": "^8.19.0"
+        "electron-updater": "^6.8.3"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
@@ -63,13 +57,11 @@
         "@radix-ui/react-tabs": "^1.1.13",
         "@radix-ui/react-toast": "^1.2.15",
         "@radix-ui/react-tooltip": "^1.2.8",
-        "@soimy/dingtalk": "^3.1.4",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
         "@types/node": "^25.3.0",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
-        "@types/ws": "^8.18.1",
         "@typescript-eslint/eslint-plugin": "^8.56.0",
         "@typescript-eslint/parser": "^8.56.0",
         "@vitejs/plugin-react": "^5.1.4",
@@ -86,7 +78,6 @@
         "i18next": "^25.8.11",
         "jsdom": "^28.1.0",
         "lucide-react": "^0.563.0",
-        "openclaw": "2026.2.26",
         "png2icons": "^2.0.1",
         "postcss": "^8.5.6",
         "react": "^19.2.4",

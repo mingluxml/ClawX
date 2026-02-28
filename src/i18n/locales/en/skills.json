@@ -6,7 +6,8 @@
     "gatewayWarning": "Gateway is not running. Skills cannot be loaded without an active Gateway.",
     "tabs": {
         "installed": "Installed",
-        "marketplace": "Marketplace"
+        "marketplace": "Marketplace",
+        "import": "Import"
     },
     "filter": {
         "all": "All ({{count}})",
@@ -73,5 +74,20 @@
         "noResults": "No skills found matching your search.",
         "emptyPrompt": "Search for new skills to expand your capabilities.",
         "searchError": "ClawHub search failed. Check your connection or installation."
+    },
+    "import": {
+        "title": "Import skill from Git repository",
+        "urlPlaceholder": "Enter Git repository URL, e.g. https://github.com/user/skill-repo",
+        "importButton": "Import",
+        "importing": "Importing...",
+        "allowedSources": "Supported sources",
+        "allowedSourcesDesc": "Only imports from: github.com, gitlab.com, gitee.com are supported",
+        "success": "Skill \"{{name}}\" imported successfully! Gateway is restarting to load the new skill.",
+        "errorInvalidUrl": "Invalid URL format. Please enter a valid Git repository URL.",
+        "errorNotAllowed": "Domain not supported. Only github.com, gitlab.com, and gitee.com are allowed.",
+        "errorAlreadyExists": "Skill \"{{name}}\" already exists. Please remove it first before re-importing.",
+        "errorGitNotFound": "Git command not found. Please make sure Git is installed.",
+        "errorCloneFailed": "Failed to clone repository: {{detail}}",
+        "errorTimeout": "Import timed out. Please check your network connection."
     }
 }

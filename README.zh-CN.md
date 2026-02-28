@@ -6,7 +6,7 @@
 <h1 align="center">ClawX</h1>
 
 <p align="center">
-  <strong>OpenClaw AI 智能体的桌面客户端</strong>
+  <strong>CoPaw AI 智能体的桌面客户端</strong>
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@
 
 ## 概述
 
-**ClawX** 是连接强大 AI 智能体与普通用户之间的桥梁。基于 [OpenClaw](https://github.com/OpenClaw) 构建，它将命令行式的 AI 编排转变为易用、美观的桌面体验——无需使用终端。
+**ClawX** 是连接强大 AI 智能体与普通用户之间的桥梁。基于 [CoPaw](https://github.com/CopilotPaw/CoPaw) 构建，它将命令行式的 AI 编排转变为易用、美观的桌面体验——无需使用终端。
 
 无论是自动化工作流、连接通讯软件，还是调度智能定时任务，ClawX 都能提供高效易用的图形界面，帮助你充分发挥 AI 智能体的能力。
 
@@ -85,11 +85,11 @@ ClawX 预置了最佳实践的模型供应商配置，原生支持 Windows 平�
 | 多 AI 供应商切换 | 统一的供应商配置面板 |
 | 技能/插件安装复杂 | 内置技能市场与管理界面 |
 
-### 内置 OpenClaw 核心
+### 内置 CoPaw 核心
 
-ClawX 直接基于官方 **OpenClaw** 核心构建。无需单独安装，我们将运行时嵌入应用内部，提供开箱即用的无缝体验。
+ClawX 直接基于官方 **CoPaw** 核心构建。无需单独安装，我们将运行时嵌入应用内部，提供开箱即用的无缝体验。
 
-我们致力于与上游 OpenClaw 项目保持严格同步，确保你始终可以使用官方发布的最新功能、稳定性改进和生态兼容性。
+我们致力于与上游 CoPaw 项目保持严格同步，确保你始终可以使用官方发布的最新功能、稳定性改进和生态兼容性。
 
 ---
 
@@ -187,7 +187,7 @@ ClawX 采用 **双进程架构**，将 UI 层与 AI 运行时操作分离：
                                │ WebSocket (JSON-RPC)
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                     OpenClaw 网关                                 │
+│                     CoPaw 网关                                    │
 │                                                                  │
 │  • AI 智能体运行时与编排                                          │
 │  • 消息频道管理                                                   │
@@ -234,7 +234,7 @@ ClawX 采用 **双进程架构**，将 UI 层与 AI 运行时操作分离：
 ClawX/
 ├── electron/              # Electron 主进程
 │   ├── main/             # 应用入口、窗口管理
-│   ├── gateway/          # OpenClaw 网关进程管理
+│   ├── gateway/          # CoPaw 网关进程管理
 │   ├── preload/          # 安全 IPC 桥接脚本
 │   └── utils/            # 工具模块（存储、认证、路径）
 ├── src/                   # React 渲染进程
@@ -324,7 +324,7 @@ pnpm package:linux        # 为 Linux 打包
 
 ClawX 构建于以下优秀的开源项目之上：
 
-- [OpenClaw](https://github.com/OpenClaw) – AI 智能体运行时
+- [CoPaw](https://github.com/CopilotPaw/CoPaw) – AI 智能体运行时
 - [Electron](https://www.electronjs.org/) – 跨平台桌面框架
 - [React](https://react.dev/) – UI 组件库
 - [shadcn/ui](https://ui.shadcn.com/) – 精美设计的组件库

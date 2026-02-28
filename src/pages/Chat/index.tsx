@@ -37,6 +37,7 @@ export function Chat() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [streamingTimestamp, setStreamingTimestamp] = useState<number>(0);
+  const prevMessageCountRef = useRef<number>(0);
 
   // Load data when gateway is running.
   // When the store already holds messages for this session (i.e. the user
@@ -57,10 +58,23 @@ export function Chat() {
     };
   }, [isGatewayRunning, loadHistory, loadSessions]);
 
-  // Auto-scroll on new messages, streaming, or activity changes
+  // Auto-scroll when new messages arrive or streaming updates
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, streamingMessage, sending, pendingFinal]);
+    const endRef = messagesEndRef.current;
+    if (!endRef) return;
+    
+    const currentCount = messages.length;
+    const hasNewMessage = currentCount > prevMessageCountRef.current;
+    prevMessageCountRef.current = currentCount;
+    
+    // Always scroll when:
+    // 1. New message added to the list
+    // 2. Currently sending (streaming)
+    // 3. Streaming message content updates
+    if (hasNewMessage || sending || streamingMessage) {
+      endRef.scrollIntoView({ behavior: 'instant' });
+    }
+  }, [messages.length, streamingMessage, sending]);
 
   // Update timestamp when sending starts
   useEffect(() => {
@@ -98,7 +112,6 @@ export function Chat() {
   const hasStreamImages = streamImages.length > 0;
   const hasStreamToolStatus = streamingTools.length > 0;
   const shouldRenderStreaming = sending && (hasStreamText || hasStreamThinking || hasStreamTools || hasStreamImages || hasStreamToolStatus);
-  const hasAnyStreamContent = hasStreamText || hasStreamThinking || hasStreamTools || hasStreamImages || hasStreamToolStatus;
 
   return (
     <div className="flex flex-col -m-6" style={{ height: 'calc(100vh - 2.5rem)' }}>
@@ -152,9 +165,9 @@ export function Chat() {
                 <ActivityIndicator phase="tool_processing" />
               )}
 
-              {/* Typing indicator when sending but no stream content yet */}
-              {sending && !pendingFinal && !hasAnyStreamContent && (
-                <TypingIndicator />
+              {/* Thinking indicator when sending but no stream content yet */}
+              {sending && !pendingFinal && !shouldRenderStreaming && (
+                <ThinkingIndicator />
               )}
             </>
           )}
@@ -238,6 +251,24 @@ function TypingIndicator() {
           <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
           <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
           <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Thinking Indicator (shown when CoPaw is reasoning) ──────────
+
+function ThinkingIndicator() {
+  return (
+    <div className="flex gap-3">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
+        <Sparkles className="h-4 w-4 animate-pulse" />
+      </div>
+      <div className="bg-muted rounded-2xl px-4 py-3">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+          <span className="animate-pulse">思考中...</span>
         </div>
       </div>
     </div>

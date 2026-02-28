@@ -6,7 +6,8 @@
     "gatewayWarning": "网关未运行。没有活跃的网关，无法加载技能。",
     "tabs": {
         "installed": "已安装",
-        "marketplace": "市场"
+        "marketplace": "市场",
+        "import": "导入"
     },
     "filter": {
         "all": "全部 ({{count}})",
@@ -73,5 +74,20 @@
         "noResults": "未找到匹配的技能。",
         "emptyPrompt": "搜索新技能以扩展您的能力。",
         "searchError": "ClawHub 搜索失败。请检查您的连接或安装。"
+    },
+    "import": {
+        "title": "从 Git 仓库导入技能",
+        "urlPlaceholder": "输入 Git 仓库 URL，例如 https://github.com/user/skill-repo",
+        "importButton": "导入",
+        "importing": "正在导入...",
+        "allowedSources": "支持的来源",
+        "allowedSourcesDesc": "仅支持从以下平台导入：github.com、gitlab.com、gitee.com",
+        "success": "技能 \"{{name}}\" 导入成功！网关正在重启以加载新技能。",
+        "errorInvalidUrl": "URL 格式不正确，请输入有效的 Git 仓库地址。",
+        "errorNotAllowed": "不支持的域名，仅允许从 github.com、gitlab.com、gitee.com 导入。",
+        "errorAlreadyExists": "技能 \"{{name}}\" 已存在，请先删除后重新导入。",
+        "errorGitNotFound": "未找到 git 命令，请确保已安装 Git。",
+        "errorCloneFailed": "克隆仓库失败：{{detail}}",
+        "errorTimeout": "导入超时，请检查网络连接。"
     }
 }

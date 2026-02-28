@@ -22,13 +22,8 @@ extraResources:
       - "!icons/*.svg"
       - "!bin/**"
       - "!screenshot/**"
-  # OpenClaw package (node_modules copied separately by afterPack hook
-  # because electron-builder respects .gitignore which excludes node_modules/)
-  - from: build/openclaw/
-    to: openclaw/
-  # NOTE: OpenClaw plugin mirrors (dingtalk, etc.) are bundled by the
-  # afterPack hook (after-pack.cjs) directly from node_modules, so they
-  # don't need an extraResources entry here.
+  # Note: CoPaw is installed at runtime using uv, not bundled with the app.
+  # This significantly reduces the app size and allows independent updates.
 
 afterPack: ./scripts/after-pack.cjs
 
@@ -36,16 +31,12 @@ asar: true
 asarUnpack:
   - "**/*.node"
 
-# Disable native module rebuilding.
-# The Electron renderer/main process has no native (.node) dependencies.
-# All native modules (opus, sharp, koffi …) belong to openclaw, which is
-# bundled separately (bundle-openclaw.mjs → extraResources) and runs in its
-# own process — @electron/rebuild must NOT touch them.
+# Disable native module rebuilding - no native dependencies in the Electron app.
 npmRebuild: false
 
 # Auto-update configuration
-# Primary: Alibaba Cloud OSS (fast for Chinese users, used for auto-update)
-# Fallback: GitHub Releases (backup, used when OSS is unavailable)
+# Primary: Alibaba Cloud OSS (fast for Chinese users)
+# Fallback: GitHub Releases
 publish:
   - provider: generic
     url: https://oss.intelli-spectrum.com/latest
@@ -147,15 +138,15 @@ linux:
   category: Utility
   maintainer: ClawX Team <team@clawx.app>
   vendor: ClawX
-  synopsis: AI Assistant powered by OpenClaw
+  synopsis: AI Assistant powered by CoPaw
   description: |
     ClawX is a graphical AI assistant application that integrates with
-    OpenClaw Gateway to provide intelligent automation and assistance
+    CoPaw to provide intelligent automation and assistance
     across multiple messaging platforms.
   desktop:
     entry:
       Name: ClawX
-      Comment: AI Assistant powered by OpenClaw
+      Comment: AI Assistant powered by CoPaw
       Categories: Utility;Network;
       Keywords: ai;assistant;automation;chat;
 

@@ -99,12 +99,11 @@ const electronAPI = {
         // WhatsApp
         'channel:requestWhatsAppQr',
         'channel:cancelWhatsAppQr',
-        // ClawHub
-        'clawhub:search',
-        'clawhub:install',
-        'clawhub:uninstall',
-        'clawhub:list',
-        'clawhub:openSkillReadme',
+        // CoPaw
+        'copaw:status',
+        'copaw:getHomeDir',
+        'copaw:getSkillsDir',
+        'copaw:getConfigPath',
         // UV
         'uv:check',
         'uv:install-all',
@@ -112,6 +111,7 @@ const electronAPI = {
         'skill:updateConfig',
         'skill:getConfig',
         'skill:getAllConfigs',
+        'skill:importFromUrl',
         // Logs
         'log:getRecent',
         'log:readFile',
@@ -125,12 +125,11 @@ const electronAPI = {
         'media:saveImage',
         // Chat send with media (reads staged files in main process)
         'chat:sendWithMedia',
-        // OpenClaw extras
-        'openclaw:getDir',
-        'openclaw:getConfigDir',
-        'openclaw:getSkillsDir',
-        'openclaw:getCliCommand',
-        'openclaw:installCliMac',
+        // Backend/CoPaw extras
+        'backend:status',
+        'backend:getType',
+        'gateway:install',
+        'gateway:isInstalled',
       ];
 
       if (validChannels.includes(channel)) {

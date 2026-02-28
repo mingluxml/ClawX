@@ -6,7 +6,8 @@
     "gatewayWarning": "ゲートウェイが稼働していません。アクティブなゲートウェイがないとスキルを読み込めません。",
     "tabs": {
         "installed": "インストール済み",
-        "marketplace": "マーケットプレイス"
+        "marketplace": "マーケットプレイス",
+        "import": "インポート"
     },
     "filter": {
         "all": "すべて ({{count}})",
@@ -73,5 +74,20 @@
         "noResults": "検索に一致するスキルが見つかりません。",
         "emptyPrompt": "新しいスキルを検索して機能を拡張しましょう。",
         "searchError": "ClawHub検索に失敗しました。接続またはインストールを確認してください。"
+    },
+    "import": {
+        "title": "Git リポジトリからスキルをインポート",
+        "urlPlaceholder": "Git リポジトリの URL を入力（例：https://github.com/user/skill-repo）",
+        "importButton": "インポート",
+        "importing": "インポート中...",
+        "allowedSources": "対応ソース",
+        "allowedSourcesDesc": "github.com、gitlab.com、gitee.com からのインポートのみ対応",
+        "success": "スキル \"{{name}}\" のインポートに成功しました！新しいスキルを読み込むためにゲートウェイを再起動しています。",
+        "errorInvalidUrl": "URL の形式が正しくありません。有効な Git リポジトリの URL を入力してください。",
+        "errorNotAllowed": "サポートされていないドメインです。github.com、gitlab.com、gitee.com のみ許可されています。",
+        "errorAlreadyExists": "スキル \"{{name}}\" は既に存在します。再インポートするには先に削除してください。",
+        "errorGitNotFound": "git コマンドが見つかりません。Git がインストールされていることを確認してください。",
+        "errorCloneFailed": "リポジトリのクローンに失敗しました：{{detail}}",
+        "errorTimeout": "インポートがタイムアウトしました。ネットワーク接続を確認してください。"
     }
 }

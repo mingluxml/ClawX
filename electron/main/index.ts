@@ -3,18 +3,22 @@
  * Manages window creation, system tray, and IPC handlers
  */
 import { app, BrowserWindow, nativeImage, session, shell } from 'electron';
-import { join } from 'path';
-import { GatewayManager } from '../gateway/manager';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { getBackendManager } from '../gateway/backend-manager';
 import { registerIpcHandlers } from './ipc-handlers';
 import { createTray } from './tray';
 import { createMenu } from './menu';
 
+// ESM compatibility: define __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 import { appUpdater, registerUpdateHandlers } from './updater';
 import { logger } from '../utils/logger';
 import { warmupNetworkOptimization } from '../utils/uv-env';
+import { deviceOAuthManager, setCoPawPort } from '../utils/device-oauth';
 
-import { ClawHubService } from '../gateway/clawhub';
-import { ensureClawXContext, repairClawXOnlyBootstrapFiles } from '../utils/openclaw-workspace';
 import { isQuitting, setQuitting } from './app-state';
 
 // Disable GPU hardware acceleration globally for maximum stability across
@@ -35,8 +39,7 @@ app.disableHardwareAcceleration();
 
 // Global references
 let mainWindow: BrowserWindow | null = null;
-const gatewayManager = new GatewayManager();
-const clawHubService = new ClawHubService();
+const backendManager = getBackendManager({ type: 'copaw', port: 8088 });
 
 /**
  * Resolve the icons directory path (works in both dev and packaged mode)
@@ -54,9 +57,16 @@ function getIconsDir(): string {
  * Get the app icon for the current platform
  */
 function getAppIcon(): Electron.NativeImage | undefined {
-  if (process.platform === 'darwin') return undefined; // macOS uses the app bundle icon
-
   const iconsDir = getIconsDir();
+
+  if (process.platform === 'darwin') {
+    // In packaged mode macOS uses the app bundle icon automatically.
+    // In dev mode we load it manually so the custom icon is visible.
+    if (app.isPackaged) return undefined;
+    const icon = nativeImage.createFromPath(join(iconsDir, 'icon.png'));
+    return icon.isEmpty() ? undefined : icon;
+  }
+
   const iconPath =
     process.platform === 'win32'
       ? join(iconsDir, 'icon.ico')
@@ -129,17 +139,25 @@ async function initialize(): Promise<void> {
   // Set application menu
   createMenu();
 
+  // Set dock icon on macOS in dev mode
+  if (process.platform === 'darwin' && !app.isPackaged && app.dock) {
+    const dockIcon = nativeImage.createFromPath(join(getIconsDir(), 'icon.png'));
+    if (!dockIcon.isEmpty()) {
+      app.dock.setIcon(dockIcon);
+    }
+  }
+
   // Create the main window
   mainWindow = createWindow();
 
   // Create system tray
   createTray(mainWindow);
 
-  // Override security headers ONLY for the OpenClaw Gateway Control UI.
-  // The URL filter ensures this callback only fires for gateway requests,
+  // Override security headers for the CoPaw backend console.
+  // The URL filter ensures this callback only fires for backend requests,
   // avoiding unnecessary overhead on every other HTTP response.
   session.defaultSession.webRequest.onHeadersReceived(
-    { urls: ['http://127.0.0.1:18789/*', 'http://localhost:18789/*'] },
+    { urls: ['http://127.0.0.1:8088/*', 'http://localhost:8088/*'] },
     (details, callback) => {
       const headers = { ...details.responseHeaders };
       delete headers['X-Frame-Options'];
@@ -159,7 +177,17 @@ async function initialize(): Promise<void> {
   );
 
   // Register IPC handlers
-  registerIpcHandlers(gatewayManager, clawHubService, mainWindow);
+  registerIpcHandlers(backendManager, mainWindow);
+
+  // Set up OAuth manager with window reference and CoPaw port
+  deviceOAuthManager.setWindow(mainWindow);
+  setCoPawPort(8088);
+
+  // Restart backend when OAuth succeeds (so CoPaw picks up new provider config)
+  deviceOAuthManager.on('oauth:success', () => {
+    logger.info('[OAuth] Provider configured, restarting backend to apply changes...');
+    backendManager.debouncedRestart(2000);
+  });
 
   // Register update handlers
   registerUpdateHandlers(appUpdater, mainWindow);
@@ -179,37 +207,20 @@ async function initialize(): Promise<void> {
     mainWindow = null;
   });
 
-  // Repair any bootstrap files that only contain ClawX markers (no OpenClaw
-  // template content). This fixes a race condition where ensureClawXContext()
-  // previously created the file before the gateway could seed the full template.
-  void repairClawXOnlyBootstrapFiles().catch((error) => {
-    logger.warn('Failed to repair bootstrap files:', error);
-  });
-
-  // Start Gateway automatically (this seeds missing bootstrap files with full templates)
+  // Start backend automatically
   try {
-    logger.debug('Auto-starting Gateway...');
-    await gatewayManager.start();
-    logger.info('Gateway auto-start succeeded');
+    logger.debug('Auto-starting CoPaw backend...');
+    await backendManager.start();
+    logger.info('CoPaw backend auto-start succeeded');
   } catch (error) {
-    logger.error('Gateway auto-start failed:', error);
+    logger.error('CoPaw backend auto-start failed:', error);
     mainWindow?.webContents.send('gateway:error', String(error));
   }
 
-  // Merge ClawX context snippets into the workspace bootstrap files.
-  // The gateway seeds workspace files asynchronously after its HTTP server
-  // is ready, so ensureClawXContext will retry until the target files appear.
-  void ensureClawXContext().catch((error) => {
-    logger.warn('Failed to merge ClawX context into workspace:', error);
-  });
-
-  // Re-apply ClawX context after every gateway restart because the gateway
-  // may re-seed workspace files with clean templates (losing ClawX markers).
-  gatewayManager.on('status', (status: { state: string }) => {
-    if (status.state === 'running') {
-      void ensureClawXContext().catch((error) => {
-        logger.warn('Failed to re-merge ClawX context after gateway reconnect:', error);
-      });
+  // Forward install progress events to renderer
+  backendManager.on('install:progress', (progress: { stage: string; progress: number; message: string }) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('backend:install-progress', progress);
     }
   });
 }
@@ -239,12 +250,12 @@ app.on('window-all-closed', () => {
 
 app.on('before-quit', () => {
   setQuitting();
-  // Fire-and-forget: do not await gatewayManager.stop() here.
+  // Fire-and-forget: do not await backendManager.stop() here.
   // Awaiting inside before-quit can stall Electron's quit sequence.
-  void gatewayManager.stop().catch((err) => {
-    logger.warn('gatewayManager.stop() error during quit:', err);
+  void backendManager.stop().catch((err) => {
+    logger.warn('backendManager.stop() error during quit:', err);
   });
 });
 
 // Export for testing
-export { mainWindow, gatewayManager };
+export { mainWindow, backendManager };

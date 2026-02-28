@@ -45,7 +45,12 @@ export const useProviderStore = create<ProviderState>((set, get) => ({
     set({ loading: true, error: null });
     
     try {
-      const providers = await window.electron.ipcRenderer.invoke('provider:list') as ProviderWithKeyInfo[];
+      const result = await window.electron.ipcRenderer.invoke('provider:list') as { 
+        success: boolean; 
+        providers?: ProviderWithKeyInfo[]; 
+        error?: string 
+      };
+      const providers = result.success && Array.isArray(result.providers) ? result.providers : [];
       const defaultId = await window.electron.ipcRenderer.invoke('provider:getDefault') as string | null;
       
       set({ 

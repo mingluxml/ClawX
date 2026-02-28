@@ -3,7 +3,12 @@
  * Creates and manages the system tray icon and menu
  */
 import { Tray, Menu, BrowserWindow, app, nativeImage } from 'electron';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+// ESM compatibility: define __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 let tray: Tray | null = null;
 

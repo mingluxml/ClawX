@@ -29,8 +29,12 @@ export const useCronStore = create<CronState>((set) => ({
     set({ loading: true, error: null });
     
     try {
-      const result = await window.electron.ipcRenderer.invoke('cron:list') as CronJob[];
-      set({ jobs: result, loading: false });
+      const result = await window.electron.ipcRenderer.invoke('cron:list') as {
+        success: boolean;
+        jobs?: CronJob[];
+        error?: string;
+      };
+      set({ jobs: result.success && Array.isArray(result.jobs) ? result.jobs : [], loading: false });
     } catch (error) {
       set({ error: String(error), loading: false });
     }
@@ -93,8 +97,11 @@ export const useCronStore = create<CronState>((set) => ({
       console.log('Cron trigger result:', result);
       // Refresh jobs after trigger to update lastRun/nextRun state
       try {
-        const jobs = await window.electron.ipcRenderer.invoke('cron:list') as CronJob[];
-        set({ jobs });
+        const refreshResult = await window.electron.ipcRenderer.invoke('cron:list') as {
+          success: boolean;
+          jobs?: CronJob[];
+        };
+        set({ jobs: refreshResult.success && Array.isArray(refreshResult.jobs) ? refreshResult.jobs : [] });
       } catch {
         // Ignore refresh error
       }

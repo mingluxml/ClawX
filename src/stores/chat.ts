@@ -1061,6 +1061,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         // until the run completes, causing it to flash out of the UI.
         let finalMessages = enrichedMessages;
         const userMsgAt = get().lastUserMessageAt;
+        
         if (get().sending && userMsgAt) {
           const userMsMs = toMs(userMsgAt);
           const hasRecentUser = enrichedMessages.some(
@@ -1485,9 +1486,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
           });
           // After the final response, quietly reload history to surface all intermediate
           // tool-use turns (thinking + tool blocks) from the Gateway's authoritative record.
+          // Delay the reload slightly to allow the Gateway to persist the conversation
+          // before we fetch it, avoiding a race where the user's message or AI response
+          // hasn't been written to the session file yet.
           if (hasOutput && !toolOnly) {
             clearHistoryPoll();
-            void get().loadHistory(true);
+            setTimeout(() => {
+              void get().loadHistory(true);
+            }, 1500);
           }
         } else {
           // No message in final event - reload history to get complete data

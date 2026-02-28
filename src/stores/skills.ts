@@ -29,9 +29,12 @@ type GatewayRpcResponse<T> = {
   error?: string;
 };
 
-type ClawHubListResult = {
-  slug: string;
-  version?: string;
+type ImportResult = {
+  success: boolean;
+  skillName?: string;
+  skillPath?: string;
+  error?: string;
+  errorCode?: string;
 };
 
 interface SkillsState {
@@ -41,6 +44,8 @@ interface SkillsState {
   searching: boolean;
   searchError: string | null;
   installing: Record<string, boolean>; // slug -> boolean
+  importingFromUrl: boolean;
+  importError: string | null;
   error: string | null;
 
   // Actions
@@ -50,6 +55,7 @@ interface SkillsState {
   uninstallSkill: (slug: string) => Promise<void>;
   enableSkill: (skillId: string) => Promise<void>;
   disableSkill: (skillId: string) => Promise<void>;
+  importSkillFromUrl: (url: string) => Promise<ImportResult>;
   setSkills: (skills: Skill[]) => void;
   updateSkill: (skillId: string, updates: Partial<Skill>) => void;
 }
@@ -61,6 +67,8 @@ export const useSkillsStore = create<SkillsState>((set, get) => ({
   searching: false,
   searchError: null,
   installing: {},
+  importingFromUrl: false,
+  importError: null,
   error: null,
 
   fetchSkills: async () => {
@@ -69,18 +77,13 @@ export const useSkillsStore = create<SkillsState>((set, get) => ({
       set({ loading: true, error: null });
     }
     try {
-      // 1. Fetch from Gateway (running skills)
+      // Fetch from Backend (running skills)
       const gatewayResult = await window.electron.ipcRenderer.invoke(
         'gateway:rpc',
         'skills.status'
       ) as GatewayRpcResponse<GatewaySkillsStatusResult>;
 
-      // 2. Fetch from ClawHub (installed on disk)
-      const clawhubResult = await window.electron.ipcRenderer.invoke(
-        'clawhub:list'
-      ) as { success: boolean; results?: ClawHubListResult[]; error?: string };
-
-      // 3. Fetch configurations directly from Electron (since Gateway doesn't return them)
+      // Fetch configurations directly from Electron (since Gateway doesn't return them)
       const configResult = await window.electron.ipcRenderer.invoke(
         'skill:getAllConfigs'
       ) as Record<string, { apiKey?: string; env?: Record<string, string> }>;
@@ -116,29 +119,6 @@ export const useSkillsStore = create<SkillsState>((set, get) => ({
         combinedSkills = [...currentSkills];
       }
 
-      // Merge with ClawHub results
-      if (clawhubResult.success && clawhubResult.results) {
-        clawhubResult.results.forEach((cs: ClawHubListResult) => {
-          const existing = combinedSkills.find(s => s.id === cs.slug);
-          if (!existing) {
-            const directConfig = configResult[cs.slug] || {};
-            combinedSkills.push({
-              id: cs.slug,
-              slug: cs.slug,
-              name: cs.slug,
-              description: 'Recently installed, initializing...',
-              enabled: false,
-              icon: '⌛',
-              version: cs.version || 'unknown',
-              author: undefined,
-              config: directConfig,
-              isCore: false,
-              isBundled: false,
-            });
-          }
-        });
-      }
-
       set({ skills: combinedSkills, loading: false });
     } catch (error) {
       console.error('Failed to fetch skills:', error);
@@ -152,43 +132,23 @@ export const useSkillsStore = create<SkillsState>((set, get) => ({
     }
   },
 
-  searchSkills: async (query: string) => {
+  searchSkills: async (_query: string) => {
     set({ searching: true, searchError: null });
     try {
-      const result = await window.electron.ipcRenderer.invoke('clawhub:search', { query }) as { success: boolean; results?: MarketplaceSkill[]; error?: string };
-      if (result.success) {
-        set({ searchResults: result.results || [] });
-      } else {
-        if (result.error?.includes('Timeout')) {
-          throw new Error('searchTimeoutError');
-        }
-        if (result.error?.toLowerCase().includes('rate limit')) {
-          throw new Error('searchRateLimitError');
-        }
-        throw new Error(result.error || 'Search failed');
-      }
+      // Skill marketplace search is not yet implemented for CoPaw backend
+      // TODO: Implement skill marketplace integration with CoPaw
+      set({ searchResults: [], searching: false });
     } catch (error) {
-      set({ searchError: String(error) });
-    } finally {
-      set({ searching: false });
+      set({ searchError: String(error), searching: false });
     }
   },
 
-  installSkill: async (slug: string, version?: string) => {
+  installSkill: async (slug: string, _version?: string) => {
     set((state) => ({ installing: { ...state.installing, [slug]: true } }));
     try {
-      const result = await window.electron.ipcRenderer.invoke('clawhub:install', { slug, version }) as { success: boolean; error?: string };
-      if (!result.success) {
-        if (result.error?.includes('Timeout')) {
-          throw new Error('installTimeoutError');
-        }
-        if (result.error?.toLowerCase().includes('rate limit')) {
-          throw new Error('installRateLimitError');
-        }
-        throw new Error(result.error || 'Install failed');
-      }
-      // Refresh skills after install
-      await get().fetchSkills();
+      // Skill installation via marketplace is not yet implemented for CoPaw backend
+      // TODO: Implement skill installation with CoPaw
+      throw new Error('Skill marketplace installation is not yet available. Please install skills manually.');
     } catch (error) {
       console.error('Install error:', error);
       throw error;
@@ -204,12 +164,9 @@ export const useSkillsStore = create<SkillsState>((set, get) => ({
   uninstallSkill: async (slug: string) => {
     set((state) => ({ installing: { ...state.installing, [slug]: true } }));
     try {
-      const result = await window.electron.ipcRenderer.invoke('clawhub:uninstall', { slug }) as { success: boolean; error?: string };
-      if (!result.success) {
-        throw new Error(result.error || 'Uninstall failed');
-      }
-      // Refresh skills after uninstall
-      await get().fetchSkills();
+      // Skill uninstallation via marketplace is not yet implemented for CoPaw backend
+      // TODO: Implement skill uninstallation with CoPaw
+      throw new Error('Skill marketplace uninstallation is not yet available. Please manage skills manually.');
     } catch (error) {
       console.error('Uninstall error:', error);
       throw error;
@@ -266,6 +223,30 @@ export const useSkillsStore = create<SkillsState>((set, get) => ({
     } catch (error) {
       console.error('Failed to disable skill:', error);
       throw error;
+    }
+  },
+
+  importSkillFromUrl: async (url: string) => {
+    set({ importingFromUrl: true, importError: null });
+    try {
+      const result = await window.electron.ipcRenderer.invoke(
+        'skill:importFromUrl',
+        url
+      ) as ImportResult;
+
+      if (result.success) {
+        // Wait for gateway restart then refresh skills
+        setTimeout(() => {
+          void get().fetchSkills();
+        }, 3000);
+      }
+
+      set({ importingFromUrl: false });
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      set({ importingFromUrl: false, importError: errorMsg });
+      return { success: false, error: errorMsg };
     }
   },
 

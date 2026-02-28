@@ -3,10 +3,15 @@
  * Cross-platform path resolution helpers
  */
 import { app } from 'electron';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { homedir } from 'os';
-import { existsSync, mkdirSync, readFileSync, realpathSync } from 'fs';
+import { existsSync, mkdirSync, realpathSync } from 'fs';
 import { logger } from './logger';
+
+// ESM compatibility: define __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export { quoteForCmd, needsWinShell, prepareWinSpawn } from './win-shell';
 
@@ -21,14 +26,16 @@ export function expandPath(path: string): string {
 }
 
 /**
- * Get OpenClaw config directory
+ * Get CoPaw config directory
+ * @deprecated Use getCoPawHomeDir from copaw-paths.ts instead
  */
 export function getOpenClawConfigDir(): string {
-  return join(homedir(), '.openclaw');
+  return join(homedir(), '.copaw');
 }
 
 /**
- * Get OpenClaw skills directory
+ * Get CoPaw skills directory
+ * @deprecated Use getCoPawSkillsDir from copaw-paths.ts instead
  */
 export function getOpenClawSkillsDir(): string {
   return join(getOpenClawConfigDir(), 'skills');
@@ -82,21 +89,17 @@ export function getPreloadPath(): string {
 }
 
 /**
- * Get OpenClaw package directory
- * - Production (packaged): from resources/openclaw (copied by electron-builder extraResources)
- * - Development: from node_modules/openclaw
+ * Get CoPaw package directory
+ * For CoPaw, this returns the venv directory since CoPaw is installed via uv
+ * @deprecated Use getCoPawVenvDir from copaw-paths.ts instead
  */
 export function getOpenClawDir(): string {
-  if (app.isPackaged) {
-    return join(process.resourcesPath, 'openclaw');
-  }
-  // Development: use node_modules/openclaw
-  return join(__dirname, '../../node_modules/openclaw');
+  return join(homedir(), '.copaw', 'venv');
 }
 
 /**
- * Get OpenClaw package directory resolved to a real path.
- * Useful when consumers need deterministic module resolution under pnpm symlinks.
+ * Get CoPaw package directory resolved to a real path.
+ * @deprecated Use copaw-paths.ts functions instead
  */
 export function getOpenClawResolvedDir(): string {
   const dir = getOpenClawDir();
@@ -111,49 +114,35 @@ export function getOpenClawResolvedDir(): string {
 }
 
 /**
- * Get OpenClaw entry script path (openclaw.mjs)
+ * Get CoPaw entry script path
+ * @deprecated CoPaw is launched via uv run copaw
  */
 export function getOpenClawEntryPath(): string {
-  return join(getOpenClawDir(), 'openclaw.mjs');
+  const binName = process.platform === 'win32' ? 'copaw.exe' : 'copaw';
+  return join(getOpenClawDir(), process.platform === 'win32' ? 'Scripts' : 'bin', binName);
 }
 
 /**
- * Get ClawHub CLI entry script path (clawdhub.js)
- */
-export function getClawHubCliEntryPath(): string {
-  return join(app.getAppPath(), 'node_modules', 'clawhub', 'bin', 'clawdhub.js');
-}
-
-/**
- * Get ClawHub CLI binary path (node_modules/.bin)
- */
-export function getClawHubCliBinPath(): string {
-  const binName = process.platform === 'win32' ? 'clawhub.cmd' : 'clawhub';
-  return join(app.getAppPath(), 'node_modules', '.bin', binName);
-}
-
-/**
- * Check if OpenClaw package exists
+ * Check if CoPaw is installed
+ * @deprecated Use isCoPawInstalled from copaw-paths.ts instead
  */
 export function isOpenClawPresent(): boolean {
-  const dir = getOpenClawDir();
-  const pkgJsonPath = join(dir, 'package.json');
-  return existsSync(dir) && existsSync(pkgJsonPath);
+  const venvDir = getOpenClawDir();
+  const binPath = getOpenClawEntryPath();
+  return existsSync(venvDir) && existsSync(binPath);
 }
 
 /**
- * Check if OpenClaw is built (has dist folder)
- * For the npm package, this should always be true since npm publishes the built dist.
+ * Check if CoPaw is ready (venv exists and binary available)
+ * @deprecated Use isCoPawInstalled from copaw-paths.ts instead
  */
 export function isOpenClawBuilt(): boolean {
-  const dir = getOpenClawDir();
-  const distDir = join(dir, 'dist');
-  const hasDist = existsSync(distDir);
-  return hasDist;
+  return isOpenClawPresent();
 }
 
 /**
- * Get OpenClaw status for environment check
+ * Get CoPaw status for environment check
+ * @deprecated Use getCoPawStatus from copaw-paths.ts instead
  */
 export interface OpenClawStatus {
   packageExists: boolean;
@@ -165,27 +154,15 @@ export interface OpenClawStatus {
 
 export function getOpenClawStatus(): OpenClawStatus {
   const dir = getOpenClawDir();
-  let version: string | undefined;
-
-  // Try to read version from package.json
-  try {
-    const pkgPath = join(dir, 'package.json');
-    if (existsSync(pkgPath)) {
-      const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
-      version = pkg.version;
-    }
-  } catch {
-    // Ignore version read errors
-  }
 
   const status: OpenClawStatus = {
     packageExists: isOpenClawPresent(),
     isBuilt: isOpenClawBuilt(),
     entryPath: getOpenClawEntryPath(),
     dir,
-    version,
+    version: undefined, // Version detection requires running copaw --version
   };
 
-  logger.info('OpenClaw status:', status);
+  logger.info('CoPaw status:', status);
   return status;
 }

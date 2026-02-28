@@ -1,0 +1,151 @@
+
+> clawx@0.2.0-alpha.1 dev /Users/xml/Desktop/code/xml/ClawX
+> vite
+
+
+  VITE v6.4.1  ready in 183 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+vite v7.3.1 building client environment for development...
+
+watching for file changes...
+vite v7.3.1 building client environment for development...
+
+watching for file changes...
+
+build started...
+
+build started...
+transforming...
+transforming...
+✓ 1 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-electron/preload/index.js  6.17 kB │ gzip: 1.59 kB
+built in 52ms.
+✓ 21 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-electron/main/index.js  112.78 kB │ gzip: 24.26 kB
+built in 152ms.
+[2026-02-28T08:50:30.802Z] [INFO ] [Updater] Version: 0.2.0-alpha.1, channel: alpha, feedUrl: https://oss.intelli-spectrum.com/alpha
+[2026-02-28T08:50:30.842Z] [INFO ] === ClawX Application Starting ===
+[2026-02-28T08:50:30.842Z] [DEBUG] Runtime: platform=darwin/arm64, electron=40.6.0, node=24.13.1, packaged=false
+[2026-02-28T08:50:30.851Z] [INFO ] Region optimization enabled via locale/timezone (locale=zh-CN, tz=Asia/Shanghai)
+[2026-02-28T08:50:30.904Z] [DEBUG] Auto-starting CoPaw backend...
+[2026-02-28T08:50:30.904Z] [INFO ] Initializing backend: copaw
+[2026-02-28T08:50:30.904Z] [INFO ] Backend initialized: copaw
+[2026-02-28T08:50:30.904Z] [DEBUG] CoPaw state changed: stopped -> starting
+[2026-02-28T08:50:30.931Z] [INFO ] Starting new CoPaw process...
+[2026-02-28T08:50:30.931Z] [INFO ] Starting CoPaw process: /Users/xml/.copaw/venv/bin/copaw app --host 127.0.0.1 --port 8088
+[2026-02-28T08:50:30.934Z] [INFO ] CoPaw process started (pid=46153)
+[2026-02-28T08:50:34.879Z] [DEBUG] [CoPaw stderr] /Users/xml/.copaw/venv/lib/python3.12/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+  from websockets.server import WebSocketServerProtocol
+[2026-02-28T08:50:36.014Z] [DEBUG] Still waiting for CoPaw... (attempt 21/240)
+[2026-02-28T08:50:36.530Z] [DEBUG] [CoPaw stderr] [NacosRegistry] Nacos SDK (nacos-sdk-python) is not available. Install it with: pip install nacos-sdk-python
+[2026-02-28T08:50:36.534Z] [DEBUG] [CoPaw stderr] INFO venv/lib/python3.12/site-packages/copaw/app/_app.py:183 | 2026-02-28 16:50:36 | STATIC_DIR: /Users/xml/.copaw/venv/lib/python3.12/site-packages/copaw/console
+[2026-02-28T08:50:36.564Z] [DEBUG] [CoPaw stderr] INFO:     Started server process [46153]
+[2026-02-28T08:50:36.565Z] [DEBUG] [CoPaw stderr] INFO:     Waiting for application startup.
+[2026-02-28T08:50:36.565Z] [DEBUG] [CoPaw stderr] WARNING venv/lib/python3.12/site-packages/copaw/agents/memory/memory_manager.py:330 | 2026-02-28 16:50:36 | Vector search disabled. Memory search functionality will be restricted. To enable, configure: EMBEDDING_API_KEY, EMBEDDING_BASE_URL, EMBEDDING_MODEL_NAME, and EMBEDDING_DIMENSIONS.
+[2026-02-28T08:50:36.566Z] [DEBUG] [CoPaw stderr] 2026-02-28 16:50:36.566 | INFO     | reme.core.service_context:__init__:87 - update with args: ['config=file'] kwargs: {'embedding_models': {'default': {'model_name': 'text-embedding-v4', 'dimensions': 1024, 'enable_cache': True}}, 'file_stores': {'default': {'backend': 'chroma', 'store_name': 'copaw', 'vector_enabled': False, 'fts_enabled': True}}, 'file_watchers': {'default': {'watch_paths': ['/Users/xml/.copaw/MEMORY.md', '/Users/xml/.copaw/memory.md', '/Users/xml/.copaw/memory']}}, 'enable_logo': False, 'log_to_console': False, 'working_dir': '/Users/xml/.copaw'}
+[2026-02-28T08:50:36.566Z] [DEBUG] [CoPaw stderr] 2026-02-28 16:50:36.566 | INFO     | reme.core.utils.pydantic_config_parser:_find_config_path:138 - load config=/Users/xml/.copaw/venv/lib/python3.12/site-packages/reme/config/file.yaml
+[2026-02-28T08:50:36.751Z] [DEBUG] [CoPaw stderr] INFO venv/lib/python3.12/site-packages/copaw/app/channels/console/channel.py:312 | 2026-02-28 16:50:36 | Console channel started
+[2026-02-28T08:50:36.755Z] [DEBUG] [CoPaw stderr] INFO venv/lib/python3.12/site-packages/copaw/config/watcher.py:49 | 2026-02-28 16:50:36 | ConfigWatcher started (poll=2.0s, path=/Users/xml/.copaw/config.json)
+[2026-02-28T08:50:36.852Z] [DEBUG] [CoPaw stderr] INFO:     Application startup complete.
+[2026-02-28T08:50:36.853Z] [DEBUG] [CoPaw stderr] INFO:     Uvicorn running on http://127.0.0.1:8088 (Press CTRL+C to quit)
+[2026-02-28T08:50:37.046Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53911 - "GET /api/version HTTP/1.1" 200 OK
+[2026-02-28T08:50:37.049Z] [DEBUG] CoPaw ready after 25 attempt(s)
+[2026-02-28T08:50:37.058Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53912 - "GET /api/version HTTP/1.1" 200 OK
+[2026-02-28T08:50:37.060Z] [DEBUG] CoPaw state changed: starting -> running
+[2026-02-28T08:50:37.060Z] [INFO ] CoPaw started successfully
+[2026-02-28T08:50:37.060Z] [INFO ] CoPaw backend auto-start succeeded
+[2026-02-28T08:50:37.074Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53911 - "GET /api/sessions/list HTTP/1.1" 200 OK
+[2026-02-28T08:50:37.081Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53911 - "GET /api/chat/messages HTTP/1.1" 200 OK
+[2026-02-28T08:50:46.086Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53942 - "POST /api/agent/query HTTP/1.1" 405 Method Not Allowed
+[2026-02-28T08:51:07.090Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53960 - "GET /api/version HTTP/1.1" 200 OK
+[2026-02-28T08:51:16.826Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53966 - "GET /channels HTTP/1.1" 200 OK
+[2026-02-28T08:51:16.918Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53966 - "GET /assets/index-Dr_jQ00_.css HTTP/1.1" 304 Not Modified
+[2026-02-28T08:51:16.919Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53967 - "GET /assets/index-keQp0sCw.js HTTP/1.1" 304 Not Modified
+[2026-02-28T08:51:17.258Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53967 - "GET /api/version HTTP/1.1" 200 OK
+[2026-02-28T08:51:17.272Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53969 - "GET /api/config/channels HTTP/1.1" 200 OK
+[2026-02-28T08:51:17.274Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53966 - "GET /logo.png HTTP/1.1" 200 OK
+[2026-02-28T08:51:17.313Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53966 - "GET /copaw-symbol.svg HTTP/1.1" 200 OK
+[2026-02-28T08:51:18.956Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53966 - "GET /api/chats HTTP/1.1" 200 OK
+[2026-02-28T08:51:18.996Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:53966 - "GET /api/chats/4c45e2a6-cc55-47e8-bfd1-e87701310bf8 HTTP/1.1" 200 OK
+[2026-02-28T08:51:27.788Z] [INFO ] CoPaw stop requested
+[2026-02-28T08:51:27.788Z] [INFO ] Sending SIGTERM to CoPaw process (pid=46153)
+ ELIFECYCLE  Command failed.
+[2026-02-28T08:51:27.893Z] [DEBUG] [CoPaw stderr] INFO:     Shutting down
+
+> clawx@0.2.0-alpha.1 dev /Users/xml/Desktop/code/xml/ClawX
+> vite
+
+
+  VITE v6.4.1  ready in 176 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+vite v7.3.1 building client environment for development...
+
+watching for file changes...
+vite v7.3.1 building client environment for development...
+
+watching for file changes...
+
+build started...
+
+build started...
+transforming...
+transforming...
+✓ 1 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-electron/preload/index.js  6.17 kB │ gzip: 1.59 kB
+built in 49ms.
+✓ 21 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-electron/main/index.js  112.78 kB │ gzip: 24.26 kB
+built in 151ms.
+[2026-02-28T08:54:54.502Z] [INFO ] [Updater] Version: 0.2.0-alpha.1, channel: alpha, feedUrl: https://oss.intelli-spectrum.com/alpha
+[2026-02-28T08:54:54.539Z] [INFO ] === ClawX Application Starting ===
+[2026-02-28T08:54:54.539Z] [DEBUG] Runtime: platform=darwin/arm64, electron=40.6.0, node=24.13.1, packaged=false
+[2026-02-28T08:54:54.548Z] [INFO ] Region optimization enabled via locale/timezone (locale=zh-CN, tz=Asia/Shanghai)
+[2026-02-28T08:54:54.600Z] [DEBUG] Auto-starting CoPaw backend...
+[2026-02-28T08:54:54.600Z] [INFO ] Initializing backend: copaw
+[2026-02-28T08:54:54.600Z] [INFO ] Backend initialized: copaw
+[2026-02-28T08:54:54.600Z] [DEBUG] CoPaw state changed: stopped -> starting
+[2026-02-28T08:54:54.635Z] [INFO ] Starting new CoPaw process...
+[2026-02-28T08:54:54.635Z] [INFO ] Starting CoPaw process: /Users/xml/.copaw/venv/bin/copaw app --host 127.0.0.1 --port 8088
+[2026-02-28T08:54:54.639Z] [INFO ] CoPaw process started (pid=48588)
+[2026-02-28T08:54:58.965Z] [DEBUG] [CoPaw stderr] /Users/xml/.copaw/venv/lib/python3.12/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+  from websockets.server import WebSocketServerProtocol
+[2026-02-28T08:54:59.719Z] [DEBUG] Still waiting for CoPaw... (attempt 21/240)
+[2026-02-28T08:55:00.651Z] [DEBUG] [CoPaw stderr] [NacosRegistry] Nacos SDK (nacos-sdk-python) is not available. Install it with: pip install nacos-sdk-python
+[2026-02-28T08:55:00.655Z] [DEBUG] [CoPaw stderr] INFO venv/lib/python3.12/site-packages/copaw/app/_app.py:183 | 2026-02-28 16:55:00 | STATIC_DIR: /Users/xml/.copaw/venv/lib/python3.12/site-packages/copaw/console
+[2026-02-28T08:55:00.686Z] [DEBUG] [CoPaw stderr] INFO:     Started server process [48588]
+[2026-02-28T08:55:00.686Z] [DEBUG] [CoPaw stderr] INFO:     Waiting for application startup.
+[2026-02-28T08:55:00.686Z] [DEBUG] [CoPaw stderr] WARNING venv/lib/python3.12/site-packages/copaw/agents/memory/memory_manager.py:330 | 2026-02-28 16:55:00 | Vector search disabled. Memory search functionality will be restricted. To enable, configure: EMBEDDING_API_KEY, EMBEDDING_BASE_URL, EMBEDDING_MODEL_NAME, and EMBEDDING_DIMENSIONS.
+[2026-02-28T08:55:00.687Z] [DEBUG] [CoPaw stderr] 2026-02-28 16:55:00.687 | INFO     | reme.core.service_context:__init__:87 - update with args: ['config=file'] kwargs: {'embedding_models': {'default': {'model_name': 'text-embedding-v4', 'dimensions': 1024, 'enable_cache': True}}, 'file_stores': {'default': {'backend': 'chroma', 'store_name': 'copaw', 'vector_enabled': False, 'fts_enabled': True}}, 'file_watchers': {'default': {'watch_paths': ['/Users/xml/.copaw/MEMORY.md', '/Users/xml/.copaw/memory.md', '/Users/xml/.copaw/memory']}}, 'enable_logo': False, 'log_to_console': False, 'working_dir': '/Users/xml/.copaw'}
+[2026-02-28T08:55:00.687Z] [DEBUG] [CoPaw stderr] 2026-02-28 16:55:00.687 | INFO     | reme.core.utils.pydantic_config_parser:_find_config_path:138 - load config=/Users/xml/.copaw/venv/lib/python3.12/site-packages/reme/config/file.yaml
+[2026-02-28T08:55:00.930Z] [DEBUG] [CoPaw stderr] INFO venv/lib/python3.12/site-packages/copaw/app/channels/console/channel.py:312 | 2026-02-28 16:55:00 | Console channel started
+[2026-02-28T08:55:00.935Z] [DEBUG] [CoPaw stderr] INFO venv/lib/python3.12/site-packages/copaw/config/watcher.py:49 | 2026-02-28 16:55:00 | ConfigWatcher started (poll=2.0s, path=/Users/xml/.copaw/config.json)
+[2026-02-28T08:55:01.037Z] [DEBUG] [CoPaw stderr] INFO:     Application startup complete.
+[2026-02-28T08:55:01.037Z] [DEBUG] [CoPaw stderr] INFO:     Uvicorn running on http://127.0.0.1:8088 (Press CTRL+C to quit)
+[2026-02-28T08:55:01.254Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54407 - "GET /api/version HTTP/1.1" 200 OK
+[2026-02-28T08:55:01.258Z] [DEBUG] CoPaw ready after 27 attempt(s)
+[2026-02-28T08:55:01.267Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54408 - "GET /api/version HTTP/1.1" 200 OK
+[2026-02-28T08:55:01.269Z] [DEBUG] CoPaw state changed: starting -> running
+[2026-02-28T08:55:01.269Z] [INFO ] CoPaw started successfully
+[2026-02-28T08:55:01.269Z] [INFO ] CoPaw backend auto-start succeeded
+[2026-02-28T08:55:01.292Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54407 - "GET /api/sessions/list HTTP/1.1" 200 OK
+[2026-02-28T08:55:01.298Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54407 - "GET /api/chat/messages HTTP/1.1" 200 OK
+[2026-02-28T08:55:03.458Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54407 - "POST /api/agent/query HTTP/1.1" 405 Method Not Allowed
+[2026-02-28T08:55:10.425Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54416 - "GET /api/cron/jobs HTTP/1.1" 200 OK
+[2026-02-28T08:55:10.425Z] [DEBUG] [CoPaw stdout] INFO:     127.0.0.1:54417 - "GET /api/cron/jobs HTTP/1.1" 200 OK
+[2026-02-28T08:55:14.815Z] [INFO ] CoPaw stop requested
+[2026-02-28T08:55:14.816Z] [INFO ] Sending SIGTERM to CoPaw process (pid=48588)
+ ELIFECYCLE  Command failed.

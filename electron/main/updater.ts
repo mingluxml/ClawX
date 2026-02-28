@@ -6,7 +6,9 @@
  * For prerelease channels (alpha, beta), the feed URL is overridden at runtime
  * to point at the channel-specific OSS directory (e.g. /alpha/, /beta/).
  */
-import { autoUpdater, UpdateInfo, ProgressInfo, UpdateDownloadedEvent } from 'electron-updater';
+import electronUpdater from 'electron-updater';
+import type { UpdateInfo, ProgressInfo, UpdateDownloadedEvent } from 'electron-updater';
+const { autoUpdater } = electronUpdater;
 import { BrowserWindow, app, ipcMain } from 'electron';
 import { logger } from '../utils/logger';
 import { EventEmitter } from 'events';

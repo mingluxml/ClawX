@@ -27,6 +27,7 @@ import {
   Key,
   ChevronDown,
   FolderOpen,
+  GitBranch,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -532,7 +533,9 @@ export function Skills() {
     uninstallSkill,
     searching,
     searchError,
-    installing
+    installing,
+    importSkillFromUrl,
+    importingFromUrl,
   } = useSkillsStore();
   const { t } = useTranslation('skills');
   const gatewayStatus = useGatewayStore((state) => state.status);
@@ -545,6 +548,10 @@ export function Skills() {
 
   const isGatewayRunning = gatewayStatus.state === 'running';
   const [showGatewayWarning, setShowGatewayWarning] = useState(false);
+
+  // Import tab state
+  const [importUrl, setImportUrl] = useState('');
+  const [importResult, setImportResult] = useState<{ success: boolean; message: string } | null>(null);
 
   // Debounce the gateway warning to avoid flickering during brief restarts (like skill toggles)
   useEffect(() => {
@@ -619,7 +626,7 @@ export function Skills() {
 
   const handleOpenSkillsFolder = useCallback(async () => {
     try {
-      const skillsDir = await window.electron.ipcRenderer.invoke('openclaw:getSkillsDir') as string;
+      const skillsDir = await window.electron.ipcRenderer.invoke('copaw:getSkillsDir') as string;
       if (!skillsDir) {
         throw new Error('Skills directory not available');
       }
@@ -640,7 +647,7 @@ export function Skills() {
   const [skillsDirPath, setSkillsDirPath] = useState('~/.openclaw/skills');
 
   useEffect(() => {
-    window.electron.ipcRenderer.invoke('openclaw:getSkillsDir')
+    window.electron.ipcRenderer.invoke('copaw:getSkillsDir')
       .then((dir) => setSkillsDirPath(dir as string))
       .catch(console.error);
   }, []);
@@ -758,6 +765,10 @@ export function Skills() {
           <TabsTrigger value="marketplace" className="gap-2">
             <Globe className="h-4 w-4" />
             {t('tabs.marketplace')}
+          </TabsTrigger>
+          <TabsTrigger value="import" className="gap-2">
+            <GitBranch className="h-4 w-4" />
+            {t('tabs.import')}
           </TabsTrigger>
           {/* <TabsTrigger value="bundles" className="gap-2">
             <Package className="h-4 w-4" />
@@ -1055,6 +1066,108 @@ export function Skills() {
             ))}
           </div>
         </TabsContent> */}
+
+        <TabsContent value="import" className="space-y-6 mt-6">
+          <Card className="border-muted/50 bg-muted/20">
+            <CardContent className="py-4 flex items-start gap-3">
+              <ShieldCheck className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <div>
+                <h3 className="text-sm font-medium mb-1">{t('import.allowedSources')}</h3>
+                <p className="text-sm text-muted-foreground">{t('import.allowedSourcesDesc')}</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <GitBranch className="h-5 w-5" />
+                {t('import.title')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!importUrl.trim() || importingFromUrl) return;
+                  setImportResult(null);
+                  const result = await importSkillFromUrl(importUrl.trim());
+                  if (result.success) {
+                    setImportResult({
+                      success: true,
+                      message: t('import.success', { name: result.skillName }),
+                    });
+                    setImportUrl('');
+                  } else {
+                    let message = result.error || '';
+                    if (result.errorCode === 'INVALID_URL') {
+                      message = t('import.errorInvalidUrl');
+                    } else if (result.errorCode === 'NOT_ALLOWED') {
+                      message = t('import.errorNotAllowed');
+                    } else if (result.errorCode === 'ALREADY_EXISTS') {
+                      message = t('import.errorAlreadyExists', { name: result.skillName });
+                    } else if (result.errorCode === 'GIT_NOT_FOUND') {
+                      message = t('import.errorGitNotFound');
+                    } else if (result.errorCode === 'TIMEOUT') {
+                      message = t('import.errorTimeout');
+                    } else if (result.errorCode === 'CLONE_FAILED') {
+                      message = t('import.errorCloneFailed', { detail: result.error });
+                    }
+                    setImportResult({ success: false, message });
+                  }
+                }}
+                className="flex gap-2"
+              >
+                <Input
+                  placeholder={t('import.urlPlaceholder')}
+                  value={importUrl}
+                  onChange={(e) => {
+                    setImportUrl(e.target.value);
+                    if (importResult) setImportResult(null);
+                  }}
+                  className="flex-1 font-mono text-sm"
+                  disabled={importingFromUrl}
+                />
+                <Button type="submit" disabled={!importUrl.trim() || importingFromUrl} className="min-w-[100px]">
+                  {importingFromUrl ? (
+                    <div className="flex items-center gap-2">
+                      <LoadingSpinner size="sm" />
+                      {t('import.importing')}
+                    </div>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4 mr-2" />
+                      {t('import.importButton')}
+                    </>
+                  )}
+                </Button>
+              </form>
+
+              {importResult && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <Card className={cn(
+                    'border',
+                    importResult.success ? 'border-green-500/50 bg-green-50 dark:bg-green-900/10' : 'border-destructive/50 bg-destructive/5'
+                  )}>
+                    <CardContent className="py-3 flex items-start gap-2 text-sm">
+                      {importResult.success ? (
+                        <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                      )}
+                      <span className={importResult.success ? 'text-green-700 dark:text-green-400' : 'text-destructive'}>
+                        {importResult.message}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
 
 
