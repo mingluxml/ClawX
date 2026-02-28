@@ -4,7 +4,7 @@
  */
 import { spawn, ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, unlinkSync, readdirSync } from 'fs';
 import { join } from 'path';
 import {
   AgentBackend,
@@ -300,6 +300,13 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
       return result as T;
     }
 
+    if (method === 'sessions.delete') {
+      const p = params as { sessionKey?: string; chatId?: string } | undefined;
+      const chatId = p?.chatId || '';
+      await this.deleteSession(chatId);
+      return {} as T;
+    }
+
     // Special handling for skills.status - transform CoPaw format to ClawX format
     if (method === 'skills.status') {
       try {
@@ -477,10 +484,43 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
   async sendMessage(
     sessionId: string,
     message: string,
-    options: { userId?: string; channel?: string } = {}
+    options: { userId?: string; channel?: string; media?: Array<{ filePath: string; mimeType: string; fileName: string; base64?: string }> } = {}
   ): Promise<unknown> {
     // CoPaw uses /api/agent/process endpoint with SSE response
     // Request format: { session_id, user_id, channel, input: [...] }
+    const contentBlocks: Array<{ type: string; text?: string; source?: { type: string; media_type: string; data: string } }> = [];
+
+    if (message) {
+      contentBlocks.push({ type: 'text', text: message });
+    }
+
+    // Add media attachments as content blocks
+    if (options.media && options.media.length > 0) {
+      for (const m of options.media) {
+        if (m.mimeType.startsWith('image/') && m.base64) {
+          // Image: send as base64 content block
+          contentBlocks.push({
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: m.mimeType,
+              data: m.base64,
+            },
+          });
+        } else {
+          // Non-image files: reference by path (CoPaw runs locally)
+          contentBlocks.push({
+            type: 'text',
+            text: `[file attached: ${m.filePath} (${m.mimeType}, ${m.fileName})]`,
+          });
+        }
+      }
+    }
+
+    if (contentBlocks.length === 0) {
+      contentBlocks.push({ type: 'text', text: '' });
+    }
+
     const payload = {
       session_id: sessionId,
       user_id: options.userId || 'clawx-user',
@@ -489,7 +529,7 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
         {
           role: 'user',
           type: 'message',
-          content: [{ type: 'text', text: message }],
+          content: contentBlocks,
         },
       ],
     };
@@ -524,18 +564,54 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
       let buffer = '';
       let finalResult: unknown = null;
       
-      // Aggregate streaming text to avoid excessive UI updates
+      // Track current message context
+      let currentMsgId: string | null = null;
+      let currentMsgType: string | null = null; // 'reasoning' | 'message' | 'function_call'
+      
+      // Aggregate content by message type
       let aggregatedText = '';
+      let aggregatedThinking = '';
+      let currentToolUse: { id: string; name: string; input: string } | null = null;
+      let toolResults: Map<string, unknown> = new Map();
+      
       let lastEmitTime = 0;
       const EMIT_INTERVAL = 100; // Emit at most every 100ms
 
       const emitDelta = () => {
+        // Build content array with all accumulated blocks
+        const contentBlocks: Array<{ type: string; text?: string; thinking?: string; id?: string; name?: string; input?: unknown }> = [];
+        
+        if (aggregatedThinking) {
+          contentBlocks.push({ type: 'thinking', thinking: aggregatedThinking });
+        }
         if (aggregatedText) {
+          contentBlocks.push({ type: 'text', text: aggregatedText });
+        }
+        if (currentToolUse) {
+          try {
+            const input = currentToolUse.input ? JSON.parse(currentToolUse.input) : {};
+            contentBlocks.push({
+              type: 'tool_use',
+              id: currentToolUse.id,
+              name: currentToolUse.name,
+              input,
+            });
+          } catch {
+            contentBlocks.push({
+              type: 'tool_use',
+              id: currentToolUse.id,
+              name: currentToolUse.name,
+              input: currentToolUse.input,
+            });
+          }
+        }
+        
+        if (contentBlocks.length > 0) {
           this.emit('chat:message', {
             state: 'delta',
             message: {
               role: 'assistant',
-              content: [{ type: 'text', text: aggregatedText }],
+              content: contentBlocks,
             },
           });
         }
@@ -554,30 +630,96 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
             try {
               const data = JSON.parse(line.slice(6));
               
-              // Aggregate text content deltas
-              if (data.object === 'content' && data.type === 'text' && data.text) {
-                aggregatedText += data.text;
+              // Handle message objects (start of a new message block)
+              if (data.object === 'message') {
+                currentMsgId = data.id || null;
+                currentMsgType = data.type || null;
                 
-                // Throttle emissions to reduce UI updates
-                const now = Date.now();
-                if (now - lastEmitTime >= EMIT_INTERVAL) {
-                  emitDelta();
-                  lastEmitTime = now;
+                // Handle tool use message
+                if (data.type === 'function_call' && data.name) {
+                  currentToolUse = {
+                    id: data.id || `tool-${Date.now()}`,
+                    name: data.name,
+                    input: '',
+                  };
                 }
-              } else if (data.object === 'response' && data.status === 'completed') {
-                // Emit any remaining text before final
+              }
+              
+              // Handle content deltas
+              if (data.object === 'content' && data.delta === true) {
+                if (data.type === 'text' && data.text) {
+                  // Check if this is thinking content based on current message type
+                  if (currentMsgType === 'reasoning') {
+                    aggregatedThinking += data.text;
+                  } else {
+                    aggregatedText += data.text;
+                  }
+                  
+                  // Throttle emissions
+                  const now = Date.now();
+                  if (now - lastEmitTime >= EMIT_INTERVAL) {
+                    emitDelta();
+                    lastEmitTime = now;
+                  }
+                } else if (data.type === 'input_json' && data.text && currentToolUse) {
+                  // Tool input being streamed
+                  currentToolUse.input += data.text;
+                }
+              }
+              
+              // Handle tool results
+              if (data.object === 'message' && data.type === 'function_call_output') {
+                const toolId = data.call_id || data.id;
+                if (toolId) {
+                  toolResults.set(toolId, data.output || data.content);
+                }
+              }
+              
+              // Handle response completion
+              if (data.object === 'response' && data.status === 'completed') {
+                // Emit any remaining content
                 emitDelta();
+                
+                // Build final content with tool results
+                const finalContent: Array<{ type: string; text?: string; thinking?: string; id?: string; name?: string; input?: unknown; output?: unknown }> = [];
+                
+                if (aggregatedThinking) {
+                  finalContent.push({ type: 'thinking', thinking: aggregatedThinking });
+                }
+                if (aggregatedText) {
+                  finalContent.push({ type: 'text', text: aggregatedText });
+                }
+                if (currentToolUse) {
+                  try {
+                    const input = currentToolUse.input ? JSON.parse(currentToolUse.input) : {};
+                    const output = toolResults.get(currentToolUse.id);
+                    finalContent.push({
+                      type: 'tool_use',
+                      id: currentToolUse.id,
+                      name: currentToolUse.name,
+                      input,
+                      output,
+                    });
+                  } catch {
+                    finalContent.push({
+                      type: 'tool_use',
+                      id: currentToolUse.id,
+                      name: currentToolUse.name,
+                      input: currentToolUse.input,
+                    });
+                  }
+                }
                 
                 finalResult = data;
                 this.emit('chat:message', {
                   state: 'final',
                   message: data.output || {
                     role: 'assistant',
-                    content: [{ type: 'text', text: aggregatedText }],
+                    content: finalContent.length > 0 ? finalContent : [{ type: 'text', text: aggregatedText }],
                   },
                 });
-              } else if (data.object === 'message' && data.type === 'message') {
-                // Emit any remaining text before final
+              } else if (data.object === 'message' && data.type === 'message' && data.status === 'completed') {
+                // Alternative final message format
                 emitDelta();
                 
                 this.emit('chat:message', {
@@ -595,7 +737,7 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
         }
       }
 
-      // Emit any remaining aggregated text
+      // Emit any remaining aggregated content
       emitDelta();
 
       return finalResult || { success: true };
@@ -659,20 +801,29 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
           const msg = item as {
             id?: string;
             role?: string;
-            content?: Array<{ type: string; text?: string; thinking?: string }>;
+            content?: Array<{ type: string; text?: string; thinking?: string; id?: string; name?: string; input?: unknown; output?: unknown }>;
             timestamp?: string;
           };
           
           // Must have role and content to be a valid message
           if (!msg.role || !msg.content) continue;
           
-          const textContent = this.extractContent(msg.content);
-          // Skip messages with no displayable content (e.g., tool-only messages)
-          if (!textContent) continue;
+          // Return the full content array to preserve thinking, tool_use, etc.
+          // Filter out empty blocks but keep all types
+          const filteredContent = msg.content.filter(block => {
+            if (block.type === 'text' && block.text) return true;
+            if (block.type === 'thinking' && block.thinking) return true;
+            if (block.type === 'tool_use' && block.name) return true;
+            if (block.type === 'tool_result') return true;
+            return false;
+          });
+          
+          // Skip messages with no displayable content
+          if (filteredContent.length === 0) continue;
           
           messages.push({
             role: msg.role as 'user' | 'assistant' | 'system',
-            content: textContent,
+            content: filteredContent,
             timestamp: msg.timestamp,
           });
         }
@@ -715,6 +866,46 @@ export class CoPawBackend extends EventEmitter implements AgentBackend {
       createdAt: chat.created_at,
       updatedAt: chat.updated_at,
     }));
+  }
+
+  async deleteSession(sessionId: string): Promise<void> {
+    // Try to delete via CoPaw API first
+    try {
+      const response = await this.httpDelete(`/api/chats/${sessionId}`);
+      if (response.ok) {
+        logger.info(`Deleted session via API: ${sessionId}`);
+        return;
+      }
+    } catch {
+      // API delete not available, fall back to file deletion
+    }
+
+    // Fall back: delete session file from disk
+    try {
+      const homeDir = getCoPawHomeDir();
+      const sessionsDir = join(homeDir, 'sessions');
+      
+      if (!existsSync(sessionsDir)) return;
+
+      // Find and delete matching session files
+      const files = readdirSync(sessionsDir);
+      let deleted = false;
+      for (const file of files) {
+        if (file.includes(sessionId) && file.endsWith('.json')) {
+          const filePath = join(sessionsDir, file);
+          unlinkSync(filePath);
+          logger.info(`Deleted session file: ${filePath}`);
+          deleted = true;
+        }
+      }
+      
+      if (!deleted) {
+        logger.warn(`No session file found for: ${sessionId}`);
+      }
+    } catch (error) {
+      logger.error(`Failed to delete session ${sessionId}:`, error);
+      throw error;
+    }
   }
 
   async getConfig(): Promise<Record<string, unknown>> {

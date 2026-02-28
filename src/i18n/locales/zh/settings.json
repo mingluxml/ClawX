@@ -8,7 +8,12 @@
     "light": "浅色",
     "dark": "深色",
     "system": "跟随系统",
-    "language": "语言"
+    "language": "语言",
+    "fontSize": "聊天字体大小",
+    "fontSizeDesc": "调整聊天消息中的文字大小",
+    "fontSmall": "小",
+    "fontMedium": "中",
+    "fontLarge": "大"
   },
   "aiProviders": {
     "title": "AI 模型提供商",

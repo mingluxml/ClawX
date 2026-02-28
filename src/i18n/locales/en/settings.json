@@ -8,7 +8,12 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System",
-    "language": "Language"
+    "language": "Language",
+    "fontSize": "Chat Font Size",
+    "fontSizeDesc": "Adjust the text size in chat messages",
+    "fontSmall": "Small",
+    "fontMedium": "Medium",
+    "fontLarge": "Large"
   },
   "aiProviders": {
     "title": "AI Providers",

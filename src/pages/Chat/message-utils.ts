@@ -77,10 +77,14 @@ export function extractThinking(message: RawMessage | unknown): string | null {
 
   const parts: string[] = [];
   for (const block of content as ContentBlock[]) {
-    if (block.type === 'thinking' && block.thinking) {
-      const cleaned = block.thinking.trim();
-      if (cleaned) {
-        parts.push(cleaned);
+    if (block.type === 'thinking') {
+      // Support both 'thinking' and 'text' properties for thinking blocks
+      const thinkingText = block.thinking || block.text;
+      if (thinkingText) {
+        const cleaned = thinkingText.trim();
+        if (cleaned) {
+          parts.push(cleaned);
+        }
       }
     }
   }
@@ -153,21 +157,36 @@ export function extractImages(message: RawMessage | unknown): Array<{ mimeType: 
  * Extract tool use blocks from a message.
  * Handles both Anthropic format (tool_use in content array) and
  * OpenAI format (tool_calls array on the message object).
+ * Also extracts output from enriched tool_use blocks (populated by enrichWithToolResultFiles).
  */
-export function extractToolUse(message: RawMessage | unknown): Array<{ id: string; name: string; input: unknown }> {
+export function extractToolUse(message: RawMessage | unknown): Array<{ id: string; name: string; input: unknown; output?: unknown }> {
   if (!message || typeof message !== 'object') return [];
   const msg = message as Record<string, unknown>;
-  const tools: Array<{ id: string; name: string; input: unknown }> = [];
+  const tools: Array<{ id: string; name: string; input: unknown; output?: unknown }> = [];
 
   // Path 1: Anthropic/normalized format — tool_use / toolCall blocks inside content array
   const content = msg.content;
   if (Array.isArray(content)) {
+    // Collect tool results by tool_use_id (for inline tool_result blocks)
+    const toolResultMap: Map<string, unknown> = new Map();
+    for (const block of content as ContentBlock[]) {
+      if ((block.type === 'tool_result' || block.type === 'toolResult') && block.id) {
+        toolResultMap.set(block.id, block.content ?? block.text);
+      }
+    }
+    
+    // Extract tool_use blocks with their outputs
     for (const block of content as ContentBlock[]) {
       if ((block.type === 'tool_use' || block.type === 'toolCall') && block.name) {
+        // Output can come from:
+        // 1. The block.output property (enriched by enrichWithToolResultFiles)
+        // 2. A matching tool_result block in the same content array
+        const output = block.output ?? (block.id ? toolResultMap.get(block.id) : undefined);
         tools.push({
           id: block.id || '',
           name: block.name,
           input: block.input ?? block.arguments,
+          output,
         });
       }
     }
@@ -199,6 +218,36 @@ export function extractToolUse(message: RawMessage | unknown): Array<{ id: strin
   }
 
   return tools;
+}
+
+/**
+ * Extract tool results from messages array.
+ * Maps tool_call_id to their results for matching with tool_use blocks.
+ */
+export function extractToolResults(messages: Array<RawMessage | unknown>): Map<string, unknown> {
+  const results = new Map<string, unknown>();
+  
+  for (const message of messages) {
+    if (!message || typeof message !== 'object') continue;
+    const msg = message as Record<string, unknown>;
+    
+    // Tool result message with toolCallId
+    if ((msg.role === 'toolresult' || msg.role === 'tool_result') && msg.toolCallId) {
+      results.set(msg.toolCallId as string, msg.content);
+    }
+    
+    // Check content array for tool_result blocks
+    const content = msg.content;
+    if (Array.isArray(content)) {
+      for (const block of content as ContentBlock[]) {
+        if ((block.type === 'tool_result' || block.type === 'toolResult') && block.id) {
+          results.set(block.id, block.content ?? block.text);
+        }
+      }
+    }
+  }
+  
+  return results;
 }
 
 /**

@@ -8,7 +8,12 @@
     "light": "ライト",
     "dark": "ダーク",
     "system": "システム",
-    "language": "言語"
+    "language": "言語",
+    "fontSize": "チャットフォントサイズ",
+    "fontSizeDesc": "チャットメッセージのテキストサイズを調整",
+    "fontSmall": "小",
+    "fontMedium": "中",
+    "fontLarge": "大"
   },
   "aiProviders": {
     "title": "AI プロバイダー",

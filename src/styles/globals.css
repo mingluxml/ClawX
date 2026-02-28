@@ -158,3 +158,37 @@
     transform: translateY(-4px);
   }
 }
+
+/* Chat font size settings */
+.chat-font-small {
+  --chat-text-size: 0.8125rem; /* 13px */
+  --chat-prose-size: 0.8125rem;
+}
+
+.chat-font-medium {
+  --chat-text-size: 0.875rem; /* 14px */
+  --chat-prose-size: 0.875rem;
+}
+
+.chat-font-large {
+  --chat-text-size: 1rem; /* 16px */
+  --chat-prose-size: 1rem;
+}
+
+.chat-font-small .prose,
+.chat-font-medium .prose,
+.chat-font-large .prose {
+  font-size: var(--chat-prose-size);
+}
+
+.chat-font-small p,
+.chat-font-medium p,
+.chat-font-large p {
+  font-size: var(--chat-text-size);
+}
+
+.chat-font-small .prose code,
+.chat-font-medium .prose code,
+.chat-font-large .prose code {
+  font-size: calc(var(--chat-text-size) * 0.9);
+}

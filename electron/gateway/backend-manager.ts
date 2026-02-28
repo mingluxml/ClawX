@@ -218,7 +218,7 @@ export class BackendManager extends EventEmitter {
   async sendMessage(
     sessionId: string,
     message: string,
-    options?: { userId?: string; channel?: string }
+    options?: { userId?: string; channel?: string; media?: Array<{ filePath: string; mimeType: string; fileName: string; base64?: string }> }
   ): Promise<unknown> {
     if (!this.backend) {
       throw new Error('Backend not initialized');

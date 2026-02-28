@@ -99,9 +99,9 @@ export const ChatMessage = memo(function ChatMessage({
 
         {/* Tool use cards */}
         {visibleTools.length > 0 && (
-          <div className="space-y-1">
+          <div className="space-y-2">
             {visibleTools.map((tool, i) => (
-              <ToolCard key={tool.id || i} name={tool.name} input={tool.input} />
+              <ToolCard key={tool.id || i} name={tool.name} input={tool.input} output={tool.output} />
             ))}
           </div>
         )}
@@ -393,21 +393,23 @@ function MessageBubble({
 
 // ── Thinking Block ──────────────────────────────────────────────
 
-function ThinkingBlock({ content }: { content: string }) {
+function ThinkingBlock({ content, isStreaming = false }: { content: string; isStreaming?: boolean }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="w-full rounded-lg border border-border/50 bg-muted/30 text-sm">
+    <div className="w-full rounded-xl border border-border/60 bg-background overflow-hidden">
       <button
-        className="flex items-center gap-2 w-full px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center gap-2 w-full px-4 py-3 hover:bg-muted/30 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
-        {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
-        <span className="font-medium">Thinking</span>
+        <Sparkles className={cn("h-4 w-4 text-purple-500", isStreaming && "animate-pulse")} />
+        <span className="text-sm font-medium">Thinking</span>
+        {isStreaming && <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground ml-auto mr-1" />}
+        {expanded ? <ChevronDown className="h-4 w-4 text-muted-foreground ml-auto" /> : <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto" />}
       </button>
       {expanded && (
-        <div className="px-3 pb-3 text-muted-foreground">
-          <div className="prose prose-sm dark:prose-invert max-w-none opacity-75">
+        <div className="px-4 pb-4 border-t border-border/40">
+          <div className="prose prose-sm dark:prose-invert max-w-none pt-3 text-muted-foreground">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
           </div>
         </div>
@@ -590,25 +592,195 @@ function ImageLightbox({
 
 // ── Tool Card ───────────────────────────────────────────────────
 
-function ToolCard({ name, input }: { name: string; input: unknown }) {
+function ToolCard({ name, input, output }: { name: string; input: unknown; output?: unknown }) {
   const [expanded, setExpanded] = useState(false);
+  const [copiedInput, setCopiedInput] = useState(false);
+  const [copiedOutput, setCopiedOutput] = useState(false);
+
+  const inputStr = input != null 
+    ? (typeof input === 'string' ? input : JSON.stringify(input, null, 2))
+    : '{}';
+  const outputStr = output != null
+    ? (typeof output === 'string' ? output : JSON.stringify(output, null, 2))
+    : null;
+
+  const copyInput = useCallback(() => {
+    navigator.clipboard.writeText(inputStr);
+    setCopiedInput(true);
+    setTimeout(() => setCopiedInput(false), 2000);
+  }, [inputStr]);
+
+  const copyOutput = useCallback(() => {
+    if (outputStr) {
+      navigator.clipboard.writeText(outputStr);
+      setCopiedOutput(true);
+      setTimeout(() => setCopiedOutput(false), 2000);
+    }
+  }, [outputStr]);
 
   return (
-    <div className="rounded-lg border border-border/50 bg-muted/20 text-sm">
+    <div className="w-full rounded-xl border border-border/60 bg-background overflow-hidden">
+      {/* Header */}
       <button
-        className="flex items-center gap-2 w-full px-3 py-1.5 text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center gap-2 w-full px-4 py-3 hover:bg-muted/30 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
-        <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
-        <Wrench className="h-3 w-3 shrink-0 opacity-60" />
-        <span className="font-mono text-xs">{name}</span>
-        {expanded ? <ChevronDown className="h-3 w-3 ml-auto" /> : <ChevronRight className="h-3 w-3 ml-auto" />}
+        <Wrench className="h-4 w-4 text-muted-foreground shrink-0" />
+        <span className="font-mono text-sm font-medium">{name}</span>
+        {expanded ? <ChevronDown className="h-4 w-4 ml-auto text-muted-foreground" /> : <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />}
       </button>
-      {expanded && input != null && (
-        <pre className="px-3 pb-2 text-xs text-muted-foreground overflow-x-auto">
-          {typeof input === 'string' ? input : JSON.stringify(input, null, 2) as string}
-        </pre>
+
+      {expanded && (
+        <div className="border-t border-border/40">
+          {/* Input Section */}
+          <div className="px-4 py-3">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-foreground">Input</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
+                onClick={copyInput}
+              >
+                {copiedInput ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3 text-muted-foreground" />}
+              </Button>
+            </div>
+            <div className="bg-muted/50 rounded-lg overflow-hidden">
+              <pre className="p-3 text-xs font-mono overflow-x-auto text-muted-foreground">
+                <code>{inputStr}</code>
+              </pre>
+            </div>
+          </div>
+
+          {/* Output Section */}
+          {outputStr && (
+            <div className="px-4 py-3 border-t border-border/40">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-foreground">Output</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={copyOutput}
+                >
+                  {copiedOutput ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3 text-muted-foreground" />}
+                </Button>
+              </div>
+              <div className="bg-muted/50 rounded-lg overflow-hidden">
+                <SyntaxHighlightedCode code={outputStr} />
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
+  );
+}
+
+// ── Syntax Highlighted Code (simple JSON highlighting) ──────────
+
+function SyntaxHighlightedCode({ code }: { code: string }) {
+  // Simple JSON syntax highlighting
+  const highlightJSON = (text: string) => {
+    // Try to parse and re-stringify for consistent formatting
+    try {
+      const parsed = JSON.parse(text);
+      text = JSON.stringify(parsed, null, 2);
+    } catch {
+      // If not valid JSON, use as-is
+    }
+
+    const lines = text.split('\n');
+    return lines.map((line, lineIdx) => {
+      const parts: React.ReactNode[] = [];
+      let remaining = line;
+      let keyIdx = 0;
+
+      // Highlight strings (keys and values)
+      const stringRegex = /"([^"\\]|\\.)*"/g;
+      let match;
+      let lastIndex = 0;
+
+      while ((match = stringRegex.exec(remaining)) !== null) {
+        // Add text before the match
+        if (match.index > lastIndex) {
+          parts.push(
+            <span key={`${lineIdx}-${keyIdx++}`} className="text-muted-foreground">
+              {remaining.slice(lastIndex, match.index)}
+            </span>
+          );
+        }
+
+        // Determine if this is a key (followed by :) or a value
+        const afterMatch = remaining.slice(match.index + match[0].length);
+        const isKey = afterMatch.trimStart().startsWith(':');
+
+        parts.push(
+          <span
+            key={`${lineIdx}-${keyIdx++}`}
+            className={isKey ? 'text-foreground' : 'text-rose-500 dark:text-rose-400'}
+          >
+            {match[0]}
+          </span>
+        );
+
+        lastIndex = match.index + match[0].length;
+      }
+
+      // Add remaining text
+      if (lastIndex < remaining.length) {
+        // Highlight numbers, booleans, null
+        const rest = remaining.slice(lastIndex);
+        const highlighted = rest
+          .replace(/\b(true|false|null)\b/g, '<bool>$1</bool>')
+          .replace(/\b(\d+\.?\d*)\b/g, '<num>$1</num>');
+        
+        if (highlighted.includes('<bool>') || highlighted.includes('<num>')) {
+          const boolParts = highlighted.split(/(<bool>.*?<\/bool>|<num>.*?<\/num>)/);
+          for (const part of boolParts) {
+            if (part.startsWith('<bool>')) {
+              parts.push(
+                <span key={`${lineIdx}-${keyIdx++}`} className="text-blue-500 dark:text-blue-400">
+                  {part.replace(/<\/?bool>/g, '')}
+                </span>
+              );
+            } else if (part.startsWith('<num>')) {
+              parts.push(
+                <span key={`${lineIdx}-${keyIdx++}`} className="text-amber-600 dark:text-amber-400">
+                  {part.replace(/<\/?num>/g, '')}
+                </span>
+              );
+            } else {
+              parts.push(
+                <span key={`${lineIdx}-${keyIdx++}`} className="text-muted-foreground">
+                  {part}
+                </span>
+              );
+            }
+          }
+        } else {
+          parts.push(
+            <span key={`${lineIdx}-${keyIdx++}`} className="text-muted-foreground">
+              {rest}
+            </span>
+          );
+        }
+      }
+
+      return (
+        <div key={lineIdx} className="flex">
+          <span className="w-8 shrink-0 text-muted-foreground/50 select-none text-right pr-3">
+            {lineIdx + 1}
+          </span>
+          <span>{parts.length > 0 ? parts : line}</span>
+        </div>
+      );
+    });
+  };
+
+  return (
+    <pre className="p-3 text-xs font-mono overflow-x-auto">
+      <code>{highlightJSON(code)}</code>
+    </pre>
   );
 }

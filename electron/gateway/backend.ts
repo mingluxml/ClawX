@@ -39,10 +39,14 @@ export interface ChatMessage {
 }
 
 export interface MessageContent {
-  type: 'text' | 'image' | 'file';
+  type: 'text' | 'image' | 'file' | 'thinking' | 'tool_use' | 'tool_result';
   text?: string;
+  thinking?: string;
   url?: string;
   name?: string;
+  id?: string;
+  input?: unknown;
+  output?: unknown;
 }
 
 /**
@@ -170,7 +174,7 @@ export interface AgentBackend extends EventEmitter {
   sendMessage(
     sessionId: string,
     message: string,
-    options?: { userId?: string; channel?: string }
+    options?: { userId?: string; channel?: string; media?: Array<{ filePath: string; mimeType: string; fileName: string; base64?: string }> }
   ): Promise<unknown>;
 
   /**

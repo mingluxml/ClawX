@@ -4,6 +4,7 @@
  * Communicates with OpenClaw Gateway via gateway:rpc IPC.
  */
 import { create } from 'zustand';
+import { updateStreamingDisplay, resetStreamingDisplay, setStreamingPhase } from '../pages/Chat/useStreamingDisplay';
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -44,11 +45,15 @@ export interface ContentBlock {
   input?: unknown;
   arguments?: unknown;
   content?: unknown;
+  /** Tool result output - populated by enrichWithToolResultFiles */
+  output?: unknown;
 }
 
 /** Session from sessions.list */
 export interface ChatSession {
   key: string;
+  /** CoPaw chat UUID - used for API operations like delete */
+  chatId?: string;
   label?: string;
   displayName?: string;
   thinkingLevel?: string;
@@ -94,6 +99,7 @@ interface ChatState {
   loadSessions: () => Promise<void>;
   switchSession: (key: string) => void;
   newSession: () => void;
+  deleteSession: (key: string) => Promise<void>;
   loadHistory: (quiet?: boolean) => Promise<void>;
   sendMessage: (text: string, attachments?: Array<{ fileName: string; mimeType: string; fileSize: number; stagedPath: string; preview: string | null }>) => Promise<void>;
   abortRun: () => Promise<void>;
@@ -125,11 +131,29 @@ let _historyPollTimer: ReturnType<typeof setTimeout> | null = null;
 // before committing the error to give the recovery path a chance.
 let _errorRecoveryTimer: ReturnType<typeof setTimeout> | null = null;
 
+// Throttle for streaming message UI updates.
+// SSE deltas arrive very frequently (every few chars). Updating React state
+// on every delta causes excessive re-renders and UI flickering.
+// We batch updates and only commit to state every STREAMING_THROTTLE_MS.
+const STREAMING_THROTTLE_MS = 100;
+let _streamingThrottleTimer: ReturnType<typeof setTimeout> | null = null;
+let _pendingStreamingMessage: unknown = null;
+let _pendingStreamingTools: Array<{ id?: string; toolCallId?: string; name: string; status: 'running' | 'completed' | 'error'; durationMs?: number; summary?: string; updatedAt: number }> = [];
+
 function clearErrorRecoveryTimer(): void {
   if (_errorRecoveryTimer) {
     clearTimeout(_errorRecoveryTimer);
     _errorRecoveryTimer = null;
   }
+}
+
+function clearStreamingThrottle(): void {
+  if (_streamingThrottleTimer) {
+    clearTimeout(_streamingThrottleTimer);
+    _streamingThrottleTimer = null;
+  }
+  _pendingStreamingMessage = null;
+  _pendingStreamingTools = [];
 }
 
 function clearHistoryPoll(): void {
@@ -185,6 +209,16 @@ function getMessageText(content: unknown): string {
       .join('\n');
   }
   return '';
+}
+
+/** Extract thinking content from message content blocks */
+function getMessageThinking(content: unknown): string {
+  if (!Array.isArray(content)) return '';
+  return (content as Array<{ type?: string; thinking?: string; text?: string }>)
+    .filter(b => b.type === 'thinking')
+    .map(b => b.thinking || b.text || '')
+    .filter(Boolean)
+    .join('\n\n');
 }
 
 /** Extract media file refs from [media attached: <path> (<mime>) | ...] patterns */
@@ -424,11 +458,58 @@ function collectToolCallPaths(msg: RawMessage, paths: Map<string, string>): void
 function enrichWithToolResultFiles(messages: RawMessage[]): RawMessage[] {
   const pending: AttachedFileMeta[] = [];
   const toolCallPaths = new Map<string, string>();
+  // Map tool_call_id -> tool result output for matching
+  const toolResultOutputs = new Map<string, unknown>();
+
+  // First pass: collect all tool result outputs
+  for (const msg of messages) {
+    if (isToolResultRole(msg.role) && msg.toolCallId) {
+      // Extract output from tool result message
+      const content = msg.content;
+      if (Array.isArray(content)) {
+        // Find tool_result block with output
+        for (const block of content as ContentBlock[]) {
+          if ((block.type === 'tool_result' || block.type === 'toolResult') && block.output) {
+            toolResultOutputs.set(msg.toolCallId, block.output);
+            break;
+          }
+        }
+        // If no explicit output block, use the entire content
+        if (!toolResultOutputs.has(msg.toolCallId)) {
+          toolResultOutputs.set(msg.toolCallId, content);
+        }
+      } else if (content) {
+        toolResultOutputs.set(msg.toolCallId, content);
+      }
+    }
+  }
 
   return messages.map((msg) => {
     // Track file paths from assistant tool call arguments for later matching
     if (msg.role === 'assistant') {
       collectToolCallPaths(msg, toolCallPaths);
+      
+      // Enrich tool_use blocks with their results
+      if (Array.isArray(msg.content)) {
+        const enrichedContent = (msg.content as ContentBlock[]).map((block) => {
+          if ((block.type === 'tool_use' || block.type === 'toolCall') && block.id) {
+            const output = toolResultOutputs.get(block.id);
+            if (output !== undefined) {
+              return { ...block, output };
+            }
+          }
+          return block;
+        });
+        
+        // Check if any blocks were enriched
+        const hasEnrichedBlocks = enrichedContent.some((block, i) => 
+          block !== (msg.content as ContentBlock[])[i]
+        );
+        
+        if (hasEnrichedBlocks) {
+          msg = { ...msg, content: enrichedContent };
+        }
+      }
     }
 
     if (isToolResultRole(msg.role)) {
@@ -931,6 +1012,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         const rawSessions = Array.isArray(data.sessions) ? data.sessions : [];
         const sessions: ChatSession[] = rawSessions.map((s: Record<string, unknown>) => ({
           key: String(s.key || ''),
+          chatId: s.id ? String(s.id) : undefined,
           label: s.label ? String(s.label) : undefined,
           displayName: s.displayName ? String(s.displayName) : undefined,
           thinkingLevel: s.thinkingLevel ? String(s.thinkingLevel) : undefined,
@@ -1030,6 +1112,51 @@ export const useChatStore = create<ChatState>((set, get) => ({
       lastUserMessageAt: null,
       pendingToolImages: [],
     }));
+  },
+
+  // ── Delete session ──
+
+  deleteSession: async (key: string) => {
+    const { sessions, currentSessionKey } = get();
+    const session = sessions.find((s) => s.key === key);
+    
+    // Use chatId (CoPaw UUID) for API deletion, fall back to sessionKey
+    const deleteId = session?.chatId || key;
+    
+    try {
+      await window.electron.ipcRenderer.invoke(
+        'gateway:rpc',
+        'sessions.delete',
+        { sessionKey: key, chatId: deleteId },
+      );
+    } catch (err) {
+      console.warn('Failed to delete session on backend:', err);
+    }
+    
+    const remaining = sessions.filter((s) => s.key !== key);
+    
+    // If we deleted the current session, switch to another one
+    if (currentSessionKey === key) {
+      const nextKey = remaining.length > 0 ? remaining[0].key : '';
+      set({
+        sessions: remaining,
+        currentSessionKey: nextKey,
+        messages: [],
+        streamingText: '',
+        streamingMessage: null,
+        streamingTools: [],
+        activeRunId: null,
+        error: null,
+        pendingFinal: false,
+        lastUserMessageAt: null,
+        pendingToolImages: [],
+      });
+      if (nextKey) {
+        get().loadHistory();
+      }
+    } else {
+      set({ sessions: remaining });
+    }
   },
 
   // ── Load chat history ──
@@ -1170,6 +1297,9 @@ export const useChatStore = create<ChatState>((set, get) => ({
       pendingFinal: false,
       lastUserMessageAt: nowMs,
     }));
+
+    // Set streaming display to thinking phase
+    setStreamingPhase('thinking');
 
     // Start the history poll and safety timeout IMMEDIATELY (before the
     // RPC await) because the gateway's chat.send RPC may block until the
@@ -1345,20 +1475,52 @@ export const useChatStore = create<ChatState>((set, get) => ({
           set({ error: null });
         }
         const updates = collectToolUpdates(event.message, resolvedState);
-        set((s) => ({
-          streamingMessage: (() => {
-            if (event.message && typeof event.message === 'object') {
-              const msgRole = (event.message as RawMessage).role;
-              if (isToolResultRole(msgRole)) return s.streamingMessage;
+
+        // Throttle streaming updates to reduce UI re-renders and flickering.
+        // Store the latest message/tools in module-level variables and only
+        // commit to React state every STREAMING_THROTTLE_MS.
+        if (event.message && typeof event.message === 'object') {
+          const msgRole = (event.message as RawMessage).role;
+          if (!isToolResultRole(msgRole)) {
+            _pendingStreamingMessage = event.message;
+            // Update the streaming display with text and thinking content
+            const msgContent = (event.message as RawMessage).content;
+            const textContent = getMessageText(msgContent);
+            const thinkingContent = getMessageThinking(msgContent);
+            updateStreamingDisplay(textContent, thinkingContent, 'streaming');
+          }
+        } else if (event.message) {
+          _pendingStreamingMessage = event.message;
+          if (typeof event.message === 'string') {
+            updateStreamingDisplay(event.message, '', 'streaming');
+          }
+        }
+        if (updates.length > 0) {
+          _pendingStreamingTools = upsertToolStatuses(_pendingStreamingTools, updates);
+        }
+
+        // Only schedule a new timer if one isn't already running
+        if (!_streamingThrottleTimer) {
+          _streamingThrottleTimer = setTimeout(() => {
+            _streamingThrottleTimer = null;
+            const msgToCommit = _pendingStreamingMessage;
+            const toolsToCommit = _pendingStreamingTools;
+            if (msgToCommit !== null || toolsToCommit.length > 0) {
+              set((s) => ({
+                streamingMessage: msgToCommit ?? s.streamingMessage,
+                streamingTools: toolsToCommit.length > 0 ? toolsToCommit : s.streamingTools,
+              }));
             }
-            return event.message ?? s.streamingMessage;
-          })(),
-          streamingTools: updates.length > 0 ? upsertToolStatuses(s.streamingTools, updates) : s.streamingTools,
-        }));
+          }, STREAMING_THROTTLE_MS);
+        }
         break;
       }
       case 'final': {
+        // Flush any pending throttled updates immediately before processing final
+        clearStreamingThrottle();
         clearErrorRecoveryTimer();
+        // NOTE: Don't reset streaming display here - wait until sending is set to false
+        // to avoid flickering (StreamingBubble disappearing before message is rendered)
         if (get().error) set({ error: null });
         // Message complete - add to history and clear streaming
         const finalMsg = event.message as RawMessage | undefined;
@@ -1484,6 +1646,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
               ...clearPendingImages,
             };
           });
+          // Reset streaming display after message is added to history
+          if (hasOutput && !toolOnly) {
+            resetStreamingDisplay();
+          }
           // After the final response, quietly reload history to surface all intermediate
           // tool-use turns (thinking + tool blocks) from the Gateway's authoritative record.
           // Delay the reload slightly to allow the Gateway to persist the conversation
@@ -1503,6 +1669,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         break;
       }
       case 'error': {
+        clearStreamingThrottle();
         const errorMsg = String(event.errorMessage || 'An error occurred');
         const wasSending = get().sending;
 
@@ -1529,6 +1696,9 @@ export const useChatStore = create<ChatState>((set, get) => ({
           pendingFinal: false,
           pendingToolImages: [],
         });
+
+        // Reset streaming display
+        resetStreamingDisplay();
 
         // Don't immediately give up: the Gateway often retries internally
         // after transient API failures (e.g. "terminated"). Keep `sending`
@@ -1560,8 +1730,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
         break;
       }
       case 'aborted': {
+        clearStreamingThrottle();
         clearHistoryPoll();
         clearErrorRecoveryTimer();
+        resetStreamingDisplay();
         set({
           sending: false,
           activeRunId: null,

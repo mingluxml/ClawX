@@ -1,9 +1,9 @@
 /**
  * Chat Toolbar
- * Session selector, new session, refresh, and thinking toggle.
+ * Session selector, new session, delete session, refresh, and thinking toggle.
  * Rendered in the Header when on the Chat page.
  */
-import { RefreshCw, Brain, ChevronDown, Plus } from 'lucide-react';
+import { RefreshCw, Brain, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useChatStore } from '@/stores/chat';
@@ -15,14 +15,21 @@ export function ChatToolbar() {
   const currentSessionKey = useChatStore((s) => s.currentSessionKey);
   const switchSession = useChatStore((s) => s.switchSession);
   const newSession = useChatStore((s) => s.newSession);
+  const deleteSession = useChatStore((s) => s.deleteSession);
   const refresh = useChatStore((s) => s.refresh);
   const loading = useChatStore((s) => s.loading);
+  const sending = useChatStore((s) => s.sending);
   const showThinking = useChatStore((s) => s.showThinking);
   const toggleThinking = useChatStore((s) => s.toggleThinking);
   const { t } = useTranslation('chat');
 
   const handleSessionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     switchSession(e.target.value);
+  };
+
+  const handleDeleteSession = () => {
+    if (!currentSessionKey) return;
+    deleteSession(currentSessionKey);
   };
 
   return (
@@ -34,7 +41,7 @@ export function ChatToolbar() {
           onChange={handleSessionChange}
           className={cn(
             'appearance-none rounded-md border border-border bg-background px-3 py-1.5 pr-8',
-            'text-sm text-foreground cursor-pointer',
+            'text-sm text-foreground cursor-pointer max-w-[200px] truncate',
             'focus:outline-none focus:ring-2 focus:ring-ring',
           )}
         >
@@ -45,8 +52,8 @@ export function ChatToolbar() {
             </option>
           )}
           {sessions.map((s) => (
-            <option key={s.key} value={s.key}>
-              {s.key}
+            <option key={s.chatId || s.key} value={s.key}>
+              {s.displayName || s.label || s.key}
             </option>
           ))}
         </select>
@@ -67,6 +74,24 @@ export function ChatToolbar() {
         </TooltipTrigger>
         <TooltipContent>
           <p>{t('toolbar.newSession')}</p>
+        </TooltipContent>
+      </Tooltip>
+
+      {/* Delete Session */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+            onClick={handleDeleteSession}
+            disabled={sending || sessions.length <= 1}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{t('toolbar.deleteSession')}</p>
         </TooltipContent>
       </Tooltip>
 

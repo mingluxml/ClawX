@@ -14,6 +14,7 @@ import {
   Download,
   Copy,
   FileText,
+  Type,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -51,6 +52,8 @@ export function Settings() {
     setAutoDownloadUpdate,
     devModeUnlocked,
     setDevModeUnlocked,
+    chatFontSize,
+    setChatFontSize,
   } = useSettingsStore();
 
   const { status: gatewayStatus, restart: restartGateway } = useGatewayStore();
@@ -272,6 +275,38 @@ export function Settings() {
                   {lang.label}
                 </Button>
               ))}
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Type className="h-4 w-4" />
+              {t('appearance.fontSize')}
+            </Label>
+            <p className="text-sm text-muted-foreground">
+              {t('appearance.fontSizeDesc')}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant={chatFontSize === 'small' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setChatFontSize('small')}
+              >
+                <span className="text-xs">{t('appearance.fontSmall')}</span>
+              </Button>
+              <Button
+                variant={chatFontSize === 'medium' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setChatFontSize('medium')}
+              >
+                <span className="text-sm">{t('appearance.fontMedium')}</span>
+              </Button>
+              <Button
+                variant={chatFontSize === 'large' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setChatFontSize('large')}
+              >
+                <span className="text-base">{t('appearance.fontLarge')}</span>
+              </Button>
             </div>
           </div>
         </CardContent>

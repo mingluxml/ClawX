@@ -156,30 +156,37 @@ function registerBackendHandlers(backendManager: BackendManager, mainWindow: Bro
     media?: Array<{ filePath: string; mimeType: string; fileName: string }>;
   }) => {
     try {
-      let message = params.message;
-      const fileReferences: string[] = [];
+      const mediaPayload: Array<{ filePath: string; mimeType: string; fileName: string; base64?: string }> = [];
 
-      // Process media attachments
+      // Process media attachments - read files and encode as base64
       if (params.media && params.media.length > 0) {
         const fsP = await import('fs/promises');
         for (const m of params.media) {
           const exists = await fsP.access(m.filePath).then(() => true, () => false);
           if (exists) {
-            fileReferences.push(`[media attached: ${m.filePath} (${m.mimeType})]`);
+            try {
+              // Read file and encode as base64 for images
+              if (m.mimeType.startsWith('image/')) {
+                const data = await fsP.readFile(m.filePath);
+                mediaPayload.push({
+                  ...m,
+                  base64: data.toString('base64'),
+                });
+              } else {
+                mediaPayload.push(m);
+              }
+            } catch (readErr) {
+              logger.warn(`[chat:sendWithMedia] Failed to read file ${m.filePath}: ${String(readErr)}`);
+              mediaPayload.push(m);
+            }
           }
         }
       }
 
-      // Append file references to message
-      if (fileReferences.length > 0) {
-        const refs = fileReferences.join('\n');
-        message = message ? `${message}\n\n${refs}` : refs;
-      }
-
       const result = await backendManager.sendMessage(
         params.sessionKey,
-        message,
-        { channel: 'console' }
+        params.message || (mediaPayload.length > 0 ? 'Process the attached file(s).' : ''),
+        { channel: 'console', media: mediaPayload }
       );
 
       return { success: true, result };
